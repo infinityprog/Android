@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="id"></string>
+    <string name="name"></string>
+    <string name="login"></string>
+    <string name="role"></string>
+</PreferenceScreen>

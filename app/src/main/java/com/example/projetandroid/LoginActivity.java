@@ -3,6 +3,7 @@ package com.example.projetandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText login;
     private EditText password;
-    private TextView user;
     private TextView validation;
     private UserRepository userRepository;
 
@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         userRepository = new UserRepository(this);
         this.login = (EditText)  findViewById(R.id.edt_login);
         this.password = (EditText) findViewById(R.id.edt_password);
-        this.user = (TextView) findViewById(R.id.user);
         this.validation = (TextView) findViewById(R.id.validation);
     }
 
@@ -64,12 +63,13 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("id", String.valueOf( user.getId()));
+                editor.putInt("id", user.getId());
                 editor.putString("name", user.getName());
                 editor.putString("login", user.getLogin());
                 editor.putString("role", user.getRole());
                 editor.commit();
-                this.user.setText(user.getPassword());
+                startActivity( new Intent(this, HomeActivity.class));
+                finish();
             }
         }
         else {

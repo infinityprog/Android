@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(admin == true){
             startActivity( new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 
