@@ -35,4 +35,7 @@ public class InfoActivity extends AppCompatActivity {
             writeS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
         }
     }
+
+    public void deconnexion(View view) {
+    }
 }
