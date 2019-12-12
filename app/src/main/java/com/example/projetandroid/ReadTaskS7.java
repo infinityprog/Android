@@ -1,5 +1,6 @@
 package com.example.projetandroid;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -22,10 +23,12 @@ public class ReadTaskS7 {
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     private ProgressBar pb_main_progressionS7;
     private Button bt_main_ConnexS7;
+    private String name;
     private View vi_main_ui;
     private TextView tv_main_plc;
     private AutomateS7 plcS7;
     private Thread readThread;
+    private boolean finish = false;
 
     private S7Client comS7;
     private String[] param = new String[10];
@@ -35,6 +38,15 @@ public class ReadTaskS7 {
         vi_main_ui = v;
         bt_main_ConnexS7 = b;
         pb_main_progressionS7 = p;
+        tv_main_plc = t;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
+
+    public ReadTaskS7(View v, TextView t) {
+        vi_main_ui = v;
         tv_main_plc = t;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
@@ -61,12 +73,32 @@ public class ReadTaskS7 {
         Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est démarré !" + "\n"
                 , Toast.LENGTH_SHORT).show();
-        tv_main_plc.setText("PLC : " + String.valueOf(t));
+        if(t == 0){
+            tv_main_plc.setText("Erreur connexion automate");
+            this.name = ("Erreur connexion automate");
+            //this.Stop();
+        }
+        else {
+            tv_main_plc.setText("PLC : " + String.valueOf(t));
+            this.name = "PLC : " + String.valueOf(t);
+        }
     }
 
-    private void downloadOnProgressUpdate(int progress) {
-        pb_main_progressionS7.setProgress(progress);
+    public String getName() {
+        return this.name;
     }
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
+    }
+
+    /*private void downloadOnProgressUpdate(int progress) {
+        pb_main_progressionS7.setProgress(progress);
+    }*/
 
     private void downloadOnPostExecute() {
         Toast.makeText(vi_main_ui.getContext(),
@@ -84,9 +116,9 @@ public class ReadTaskS7 {
                 case MESSAGE_PRE_EXECUTE:
                     downloadOnPreExecute(msg.arg1);
                     break;
-                case MESSAGE_PROGRESS_UPDATE:
+                /*case MESSAGE_PROGRESS_UPDATE:
                     downloadOnProgressUpdate(msg.arg1);
-                    break;
+                    break;*/
                 case MESSAGE_POST_EXECUTE:
                     downloadOnPostExecute();
                     break;
