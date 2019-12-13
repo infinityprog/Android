@@ -1,17 +1,22 @@
 package com.example.projetandroid;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projetandroid.Simatic_S7.IntByRef;
 import com.example.projetandroid.Simatic_S7.S7;
 import com.example.projetandroid.Simatic_S7.S7Client;
+import com.example.projetandroid.Simatic_S7.S7CpuInfo;
 import com.example.projetandroid.Simatic_S7.S7OrderCode;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,6 +39,12 @@ public class ReadTaskS7 {
     private String[] param = new String[10];
     private byte[] datasPLC = new byte[512];
 
+    private int dbNumber;
+    private int address;
+    private ListView lst_Byte;
+    private TextView version;
+    private TextView statut;
+
     public ReadTaskS7(View v, Button b, ProgressBar p, TextView t) {
         vi_main_ui = v;
         bt_main_ConnexS7 = b;
@@ -45,9 +56,12 @@ public class ReadTaskS7 {
     }
 
 
-    public ReadTaskS7(View v, TextView t) {
+    public ReadTaskS7(View v, TextView t,TextView version,TextView statut,ListView lst_Byte) {
         vi_main_ui = v;
         tv_main_plc = t;
+        this.version = version;
+        this.statut = statut;
+        this.lst_Byte = lst_Byte;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -100,6 +114,65 @@ public class ReadTaskS7 {
         pb_main_progressionS7.setProgress(progress);
     }*/
 
+    public int getDbNumber() {
+        return dbNumber;
+    }
+
+    public void setDbNumber(int dbNumber) {
+        this.dbNumber = dbNumber;
+    }
+
+    public int getAddress() {
+        return address;
+    }
+
+    public void setAddress(int address) {
+        this.address = address;
+    }
+
+    public ListView getLst_Byte() {
+        return lst_Byte;
+    }
+
+    public void setLst_Byte(ListView lst_Byte) {
+        this.lst_Byte = lst_Byte;
+    }
+
+    public TextView getVersion() {
+        return version;
+    }
+
+    public void setVersion(TextView version) {
+        this.version = version;
+    }
+
+    public TextView getStatut() {
+        return statut;
+    }
+
+    public void setStatut(TextView statut) {
+        this.statut = statut;
+    }
+
+    private void statusType(int status){
+
+        switch (status){
+
+            case 4:
+                this.getStatut().setText("Stop");
+                this.getStatut().setTextColor(Color.parseColor("#FF8C42"));
+                break;
+            case 8:
+                this.getStatut().setText("Run");
+                this.getStatut().setTextColor(Color.parseColor("#8AFF56"));
+                break;
+            default:
+                this.getStatut().setText("Error");
+                this.getStatut().setTextColor(Color.parseColor("#EB524D"));
+                break;
+        }
+    }
+
     private void downloadOnPostExecute() {
         Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est terminé !"
@@ -142,6 +215,10 @@ public class ReadTaskS7 {
                     numCPU = Integer.valueOf(orderCode.Code().toString().substring(5, 8));
                 } else numCPU = 0000;
                 sendPreExecuteMessage(numCPU);
+                S7CpuInfo info = new S7CpuInfo();
+                getVersion().setText(comS7.GetCpuInfo(info));
+                IntByRef status = new IntByRef();
+                statusType(comS7.GetPlcStatus(status));
                 while(isRunning.get()){
                     if (res.equals(0)){
                         int retInfo = comS7.ReadArea(S7.S7AreaDB,5,9,2,datasPLC);
