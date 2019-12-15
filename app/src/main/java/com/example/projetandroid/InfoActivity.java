@@ -36,7 +36,7 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         num = (TextView) findViewById(R.id.txv_name) ;
-        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,lst_byte);
+        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,lst_byte,Integer.parseInt(address.getText().toString()),size.getSelectedItem().toString(),Integer.parseInt(dataBlock.getText().toString()),getApplicationContext());
         SharedPreferences sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
         readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
         try {

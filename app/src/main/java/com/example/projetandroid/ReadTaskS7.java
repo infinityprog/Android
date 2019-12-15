@@ -1,5 +1,6 @@
 package com.example.projetandroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -13,12 +14,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projetandroid.Entity.BitAdaptater;
 import com.example.projetandroid.Simatic_S7.IntByRef;
 import com.example.projetandroid.Simatic_S7.S7;
 import com.example.projetandroid.Simatic_S7.S7Client;
 import com.example.projetandroid.Simatic_S7.S7CpuInfo;
 import com.example.projetandroid.Simatic_S7.S7OrderCode;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReadTaskS7 {
@@ -44,6 +47,8 @@ public class ReadTaskS7 {
     private ListView lst_Byte;
     private TextView version;
     private TextView statut;
+    private String size;
+    private Context context;
 
     public ReadTaskS7(View v, Button b, ProgressBar p, TextView t) {
         vi_main_ui = v;
@@ -56,12 +61,16 @@ public class ReadTaskS7 {
     }
 
 
-    public ReadTaskS7(View v, TextView t,TextView version,TextView statut,ListView lst_Byte) {
+    public ReadTaskS7(View v, TextView t,TextView version,TextView statut,ListView lst_Byte, int valBit, String size, int dbNumber,Context context) {
         vi_main_ui = v;
         tv_main_plc = t;
         this.version = version;
         this.statut = statut;
         this.lst_Byte = lst_Byte;
+        this.address = valBit;
+        this.size = size;
+        this.dbNumber = dbNumber;
+        this.context = context;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -110,9 +119,14 @@ public class ReadTaskS7 {
         this.finish = finish;
     }
 
-    /*private void downloadOnProgressUpdate(int progress) {
-        pb_main_progressionS7.setProgress(progress);
-    }*/
+    private void downloadOnProgressUpdate(ArrayList<Integer> bits, String address) {
+        //pb_main_progressionS7.setProgress(progress);
+    }
+
+    private void updateListView(ArrayList<Integer> bits, String address){
+        BitAdaptater adapter = new BitAdaptater(context, bits,address);
+        this.getLst_Byte().setAdapter(adapter);
+    }
 
     public int getDbNumber() {
         return dbNumber;
@@ -221,12 +235,25 @@ public class ReadTaskS7 {
                 statusType(comS7.GetPlcStatus(status));
                 while(isRunning.get()){
                     if (res.equals(0)){
-                        int retInfo = comS7.ReadArea(S7.S7AreaDB,5,9,2,datasPLC);
-                        int data=0;
+                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,address,1,datasPLC);
+                        ArrayList<Integer> data= new ArrayList<>();
 //int dataB=0;
                         if (retInfo ==0) {
-                            data = S7.GetWordAt(datasPLC, 0);
-                            sendProgressMessage(data);
+
+                            for (int i = 0; i < datasPLC.length ; i++) {
+
+
+                                if(S7.GetBitAt(datasPLC, i,address)){
+                                    data.add(1);
+                                }
+                                else{
+                                    data.add(0);
+                                }
+
+                            }
+
+
+                            sendProgressMessage(data, address + ".");
                         }
                         Log.i("Variable A.P.I. -> ", String.valueOf(data));
                     }
@@ -253,10 +280,10 @@ public class ReadTaskS7 {
             preExecuteMsg.arg1 = v;
             monHandler.sendMessage(preExecuteMsg);
         }
-        private void sendProgressMessage(int i) {
+        private void sendProgressMessage(ArrayList<Integer> bits, String address) {
             Message progressMsg = new Message();
             progressMsg.what = MESSAGE_PROGRESS_UPDATE;
-            progressMsg.arg1 = i;
+            progressMsg.arg1 = 1;
             monHandler.sendMessage(progressMsg);
         }
     }

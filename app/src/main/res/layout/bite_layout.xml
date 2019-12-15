@@ -11,7 +11,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="B1"
-            android:id="@+id/txv_nb1"
+            android:id="@+id/txv_nb"
             android:textSize="15sp"/>
 
         <TextView
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:id="@+id/txv_vb1"
+            android:id="@+id/txv_vb"
             android:gravity="center"
             android:text="0"
             />
