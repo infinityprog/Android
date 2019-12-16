@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:textAlignment="center"
+            android:id="@+id/txv_status"
             android:text="Statut"
             />
 
@@ -100,7 +101,7 @@
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:id="@+id/edt_dtblck"
-                    android:text="25"
+                    android:text="5"
                     />
             </LinearLayout>
             <LinearLayout
@@ -159,7 +160,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:id="@+id/edt_address"
-                    android:text="2"
+                    android:text="0"
                     />
             </LinearLayout>
 

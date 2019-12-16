@@ -40,6 +40,8 @@ public class BitAdaptater extends ArrayAdapter<Integer> {
         TextView txv_vb = (TextView) convertView.findViewById(R.id.txv_vb);
         txv_vb.setText(bits.get(position).toString());
 
+        System.out.println("valeur bit : " + bits.get(position).toString());
+
         return convertView;
     }
 }

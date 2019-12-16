@@ -26,8 +26,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReadTaskS7 {
     private static final int MESSAGE_PRE_EXECUTE = 1;
-    private static final int MESSAGE_PROGRESS_UPDATE = 2;
+    private static final int MESSAGE_STATUS_UPDATE = 2;
     private static final int MESSAGE_POST_EXECUTE = 3;
+    private static final int MESSAGE_BIT_UPDATE = 4;
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     private ProgressBar pb_main_progressionS7;
     private Button bt_main_ConnexS7;
@@ -49,6 +50,7 @@ public class ReadTaskS7 {
     private TextView statut;
     private String size;
     private Context context;
+    private ArrayList<Integer> data;
 
     public ReadTaskS7(View v, Button b, ProgressBar p, TextView t) {
         vi_main_ui = v;
@@ -168,6 +170,14 @@ public class ReadTaskS7 {
         this.statut = statut;
     }
 
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     private void statusType(int status){
 
         switch (status){
@@ -203,11 +213,14 @@ public class ReadTaskS7 {
                 case MESSAGE_PRE_EXECUTE:
                     downloadOnPreExecute(msg.arg1);
                     break;
-                /*case MESSAGE_PROGRESS_UPDATE:
-                    downloadOnProgressUpdate(msg.arg1);
-                    break;*/
+                case MESSAGE_STATUS_UPDATE:
+                    statusType(msg.arg1);
+                    break;
                 case MESSAGE_POST_EXECUTE:
                     downloadOnPostExecute();
+                    break;
+                case MESSAGE_BIT_UPDATE:
+                    updateListView(data, address + ".");
                     break;
                 default:
                     break;
@@ -230,17 +243,27 @@ public class ReadTaskS7 {
                 } else numCPU = 0000;
                 sendPreExecuteMessage(numCPU);
                 S7CpuInfo info = new S7CpuInfo();
-                getVersion().setText(comS7.GetCpuInfo(info));
-                IntByRef status = new IntByRef();
-                statusType(comS7.GetPlcStatus(status));
+                comS7.GetCpuInfo(info);
+                getVersion().setText(info.ASName());
+
                 while(isRunning.get()){
                     if (res.equals(0)){
-                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,address,1,datasPLC);
-                        ArrayList<Integer> data= new ArrayList<>();
+                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,0,0,datasPLC);
+                        data= new ArrayList<>();
 //int dataB=0;
+                        System.out.println("longueur data : "+datasPLC.length);
+                        IntByRef status = new IntByRef();
+                        comS7.GetPlcStatus(status);
+                        sendStatusMessage(status.Value);
                         if (retInfo ==0) {
-
-                            for (int i = 0; i < datasPLC.length ; i++) {
+                            int max = 0;
+                            if (size.equals("Word")){
+                                max = 16;
+                            }else
+                            {
+                                max = 8;
+                            }
+                            for (int i = 0; i < max ; i++) {
 
 
                                 if(S7.GetBitAt(datasPLC, i,address)){
@@ -252,10 +275,9 @@ public class ReadTaskS7 {
 
                             }
 
-
-                            sendProgressMessage(data, address + ".");
+                            sendBitMessage();
                         }
-                        Log.i("Variable A.P.I. -> ", String.valueOf(data));
+                        //Log.i("Variable A.P.I. -> ", String.valueOf(data));
                     }
                     try {
                         Thread.sleep(500);
@@ -280,10 +302,22 @@ public class ReadTaskS7 {
             preExecuteMsg.arg1 = v;
             monHandler.sendMessage(preExecuteMsg);
         }
-        private void sendProgressMessage(ArrayList<Integer> bits, String address) {
+        /*private void sendProgressMessage(ArrayList<Integer> bits, String address) {
             Message progressMsg = new Message();
             progressMsg.what = MESSAGE_PROGRESS_UPDATE;
             progressMsg.arg1 = 1;
+            monHandler.sendMessage(progressMsg);
+        }*/
+        private void sendStatusMessage(int s){
+            Message progressMsg = new Message();
+            progressMsg.what = MESSAGE_STATUS_UPDATE;
+            progressMsg.arg1 = s;
+            monHandler.sendMessage(progressMsg);
+        }
+
+        private void sendBitMessage(){
+            Message progressMsg = new Message();
+            progressMsg.what = MESSAGE_BIT_UPDATE;
             monHandler.sendMessage(progressMsg);
         }
     }

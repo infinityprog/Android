@@ -91,6 +91,7 @@ public class HomeActivity extends AppCompatActivity {
             editor.putString("ip", ip.getText().toString());
             editor.putString("slot", slot.getText().toString());
             editor.putString("rack", rack.getText().toString());
+            editor.putString("description", description.getText().toString());
             editor.commit();
             startActivity( new Intent(this, InfoActivity.class));
         }
