@@ -248,7 +248,7 @@ public class ReadTaskS7 {
 
                 while(isRunning.get()){
                     if (res.equals(0)){
-                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,0,0,datasPLC);
+                        int retInfo = comS7.ReadArea(S7.S7AreaDB,/*dbNumber*/5,0,8,datasPLC);
                         data= new ArrayList<>();
 //int dataB=0;
                         System.out.println("longueur data : "+datasPLC.length);
@@ -265,8 +265,8 @@ public class ReadTaskS7 {
                             }
                             for (int i = 0; i < max ; i++) {
 
-
-                                if(S7.GetBitAt(datasPLC, i,address)){
+                                System.out.println(S7.GetBitAt(datasPLC, address,i));
+                                if(S7.GetBitAt(datasPLC, address,i)){
                                     data.add(1);
                                 }
                                 else{
