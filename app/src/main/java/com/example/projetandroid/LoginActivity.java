@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("login", user.getLogin());
                 editor.putString("role", user.getRole());
                 editor.commit();
-                startActivity( new Intent(this, HomeActivity.class));
+                startActivity( new Intent(this, ChoiceActivity.class));
                 finish();
             }
         }

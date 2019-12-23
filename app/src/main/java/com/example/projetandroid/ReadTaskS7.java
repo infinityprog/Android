@@ -78,6 +78,16 @@ public class ReadTaskS7 {
         readThread = new Thread(plcS7);
     }
 
+    public ReadTaskS7(View v, TextView t,TextView version,TextView statut) {
+        vi_main_ui = v;
+        tv_main_plc = t;
+        this.version = version;
+        this.statut = statut;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
     public void Stop() {
         isRunning.set(false);
         comS7.Disconnect();
