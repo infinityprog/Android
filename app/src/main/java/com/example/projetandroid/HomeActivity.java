@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projetandroid.Comprime.ComprimeHomeActivity;
 import com.example.projetandroid.Db.AutomateRepository;
 import com.example.projetandroid.Entity.Automate;
 import com.example.projetandroid.Entity.CustomListAdapter;
@@ -94,6 +95,8 @@ public class HomeActivity extends AppCompatActivity {
             editor.putString("description", description.getText().toString());
             editor.commit();
             startActivity( new Intent(this, InfoActivity.class));
+            finish();
+
         }
 
         else
