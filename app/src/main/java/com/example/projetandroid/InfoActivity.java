@@ -1,5 +1,6 @@
 package com.example.projetandroid;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,9 +29,13 @@ public class InfoActivity extends AppCompatActivity {
     private TextView version;
     private TextView statut;
     private TextView description;
+    private TextView error;
 
     private EditText dataBlock;
+    private TextView nbrCPB;
+    private TextView nbrBouteille;
 
+    private ImageView read;
 
 
     @Override
@@ -43,7 +49,11 @@ public class InfoActivity extends AppCompatActivity {
         statut = (TextView)  findViewById(R.id.txv_status);
         description = (TextView) findViewById(R.id.txv_description);
         dataBlock = (EditText) findViewById(R.id.edt_dtblck);
-        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut);
+        nbrCPB = (TextView) findViewById(R.id.txv_nbrCPB);
+        nbrBouteille = (TextView) findViewById(R.id.txv_nbrB);
+        error = (TextView) findViewById(R.id.error);
+        read = (ImageView) findViewById(R.id.btn_read);
+        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
         sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
         readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
         try {
@@ -58,6 +68,25 @@ public class InfoActivity extends AppCompatActivity {
             writeS7 = new WriteTaskS7();
             writeS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
         }
+
+        read.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(dataBlock.getText().toString().equals("")){
+                    error.setText("data block ne peut etre vide");
+                }
+                else {
+                    SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
+                    editor.commit();
+                    startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
+                }
+
+            }
+        });
     }
 
     public void deconnexion(View view) {
@@ -67,10 +96,6 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     public void read(View view) {
-        SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("db",Integer.parseInt(dataBlock.getText().toString()));
-        editor.commit();
-        startActivity( new Intent(this, ReadComprimeActivity.class));
+
     }
 }

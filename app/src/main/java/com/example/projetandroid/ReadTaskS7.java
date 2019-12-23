@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -52,6 +53,35 @@ public class ReadTaskS7 {
     private Context context;
     private ArrayList<Integer> data;
 
+    private TextView nbrCPB;
+    private TextView nbrBouteille;
+
+    private TextView bits[] ;
+
+    // nombre de bits
+    private TextView bit0;
+    private TextView bit1;
+    private TextView bit2;
+    private TextView bit3;
+    private TextView bit4;
+    private TextView bit5;
+    private TextView bit6;
+    private TextView bit7;
+
+    private TextView bit8;
+    private TextView bit9;
+    private TextView bit10;
+    private TextView bit11;
+    private TextView bit12;
+    private TextView bit13;
+    private TextView bit14;
+    private TextView bit15;
+
+    private TextView bit16;
+    private TextView bit17;
+
+
+
     public ReadTaskS7(View v, Button b, ProgressBar p, TextView t) {
         vi_main_ui = v;
         bt_main_ConnexS7 = b;
@@ -78,11 +108,26 @@ public class ReadTaskS7 {
         readThread = new Thread(plcS7);
     }
 
-    public ReadTaskS7(View v, TextView t,TextView version,TextView statut) {
+    public ReadTaskS7(View v, TextView t,TextView version,TextView statut, TextView nbrCPB, TextView nbrBouteille,int dbNumber) {
         vi_main_ui = v;
         tv_main_plc = t;
         this.version = version;
         this.statut = statut;
+        this.nbrCPB = nbrCPB;
+        this.nbrBouteille = nbrBouteille;
+        this.dbNumber = dbNumber;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
+    public ReadTaskS7(View vi_main_ui, int dbNumber, TextView statut, TextView nbrCPB, TextView nbrBouteille, TextView bits[]) {
+        this.vi_main_ui = vi_main_ui;
+        this.dbNumber = dbNumber;
+        this.statut = statut;
+        this.nbrCPB = nbrCPB;
+        this.nbrBouteille = nbrBouteille;
+        this.bits = bits;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -207,11 +252,38 @@ public class ReadTaskS7 {
         }
     }
 
+    private int convBoolInt(boolean bool){
+        if(bool){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    private void setBits(){
+
+        for (int i = 0; i < 8 ; i++){
+        bits[i].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 0,i))));
+        }
+
+        bits[8].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 1,0))));
+        bits[9].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 1,2))));
+        bits[10].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 1,3))));
+        bits[11].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 1,6))));
+
+        for (int i = 0; i < 5 ; i++){
+            bits[i+12].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 4,i))));
+        }
+
+
+    }
+
     private void downloadOnPostExecute() {
         Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est terminé !"
                 , Toast.LENGTH_LONG).show();
-        pb_main_progressionS7.setProgress(0);
+        //pb_main_progressionS7.setProgress(0);
         tv_main_plc.setText("PLC : /!\\");
     }
 
@@ -251,22 +323,31 @@ public class ReadTaskS7 {
                 if (res.equals(0) && result.equals(0)) {
                     numCPU = Integer.valueOf(orderCode.Code().toString().substring(5, 8));
                 } else numCPU = 0000;
-                sendPreExecuteMessage(numCPU);
+                if(tv_main_plc != null) {
+                    sendPreExecuteMessage(numCPU);
+                }
                 S7CpuInfo info = new S7CpuInfo();
                 comS7.GetCpuInfo(info);
-                getVersion().setText(info.ASName());
+                if(getVersion() != null) {
+                    getVersion().setText(info.ASName());
+                }
 
                 while(isRunning.get()){
                     if (res.equals(0)){
-                        int retInfo = comS7.ReadArea(S7.S7AreaDB,/*dbNumber*/5,0,8,datasPLC);
+                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,0,18,datasPLC);
                         data= new ArrayList<>();
 //int dataB=0;
-                        System.out.println("longueur data : "+datasPLC.length);
                         IntByRef status = new IntByRef();
                         comS7.GetPlcStatus(status);
                         sendStatusMessage(status.Value);
+
                         if (retInfo ==0) {
-                            int max = 0;
+                            nbrCPB.setText(String.valueOf(S7.GetWordAt(datasPLC,14)));
+                            nbrBouteille.setText(String.valueOf(S7.GetWordAt(datasPLC,16)));
+                            if(bits != null) {
+                                setBits();
+                            }
+                            /*int max = 0;
                             if (size.equals("Word")){
                                 max = 16;
                             }else
@@ -283,9 +364,9 @@ public class ReadTaskS7 {
                                     data.add(0);
                                 }
 
-                            }
+                            }*/
 
-                            sendBitMessage();
+                            //sendBitMessage();
                         }
                         //Log.i("Variable A.P.I. -> ", String.valueOf(data));
                     }

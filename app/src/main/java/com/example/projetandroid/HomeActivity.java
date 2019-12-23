@@ -95,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
             editor.putString("description", description.getText().toString());
             editor.commit();
             startActivity( new Intent(this, InfoActivity.class));
-            finish();
 
         }
 
