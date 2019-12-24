@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projetandroid.Comprime.ReadComprimeActivity;
+import com.example.projetandroid.Comprime.WriteComprimeActivity;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class InfoActivity extends AppCompatActivity {
     private TextView nbrBouteille;
 
     private ImageView read;
+    private ImageView write;
 
 
     @Override
@@ -53,6 +55,7 @@ public class InfoActivity extends AppCompatActivity {
         nbrBouteille = (TextView) findViewById(R.id.txv_nbrB);
         error = (TextView) findViewById(R.id.error);
         read = (ImageView) findViewById(R.id.btn_read);
+        write = findViewById(R.id.btn_write);
         readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
         sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
         readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
@@ -83,6 +86,25 @@ public class InfoActivity extends AppCompatActivity {
                     editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
                     editor.commit();
                     startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
+                }
+
+            }
+        });
+
+        write.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(dataBlock.getText().toString().equals("")){
+                    error.setText("data block ne peut etre vide");
+                }
+                else {
+                    SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
+                    editor.commit();
+                    startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
                 }
 
             }

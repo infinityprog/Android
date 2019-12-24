@@ -5,9 +5,8 @@
     <string name="country_prompt">Choose a country</string>
 
     <string-array name="size_arrays">
-        <item>I1 -> I10</item>
-        <item>I11 -> I14</item>
-        <item>Sortie</item>
+        <item>Bit</item>
+        <item>Word</item>
     </string-array>
 
 </resources>
