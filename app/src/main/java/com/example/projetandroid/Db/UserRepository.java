@@ -26,6 +26,8 @@ public class UserRepository {
     private static final int NUM_COL_PASSWORD = 3;
     private static final String COL_ROLE = "role";
     private static final int NUM_COL_ROLE = 4;
+    private static final String COL_LAST_NAME = "last_name";
+    private static final int NUM_COL_LAST_NAME = 5;
 
     private SQLiteDatabase bdd;
 
@@ -58,6 +60,7 @@ public class UserRepository {
         values.put(COL_LOGIN, user.getLogin());
         values.put(COL_PASSWORD, user.getPassword());
         values.put(COL_ROLE, user.getRole());
+        values.put(COL_LAST_NAME,user.getLastName());
         //on insère l'objet dans la BDD via le ContentValues
         return bdd.insert(TABLE, null, values);
     }
@@ -70,6 +73,7 @@ public class UserRepository {
         values.put(COL_LOGIN, user.getLogin());
         values.put(COL_PASSWORD, user.getPassword());
         values.put(COL_ROLE, user.getRole());
+        values.put(COL_LAST_NAME,user.getLastName());
         return bdd.update(TABLE, values, COL_ID + " = " +id, null);
     }
 
@@ -80,17 +84,17 @@ public class UserRepository {
 
     public User findUser(String login) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
-        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE}, COL_LOGIN + " = \"" + login +"\"", null, null, null, null);
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE,COL_LAST_NAME}, COL_LOGIN + " = \"" + login +"\"", null, null, null, null);
         return cursorToUser(c);
     }
 
     public User login(String login, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE}, COL_LOGIN + " = \"" + login +"\" and " + COL_PASSWORD + " = \"" + password +"\"", null, null, null, null);
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE,COL_LAST_NAME}, COL_LOGIN + " = \"" + login +"\" and " + COL_PASSWORD + " = \"" + password +"\"", null, null, null, null);
         return cursorToUser(c);
     }
 
     public boolean adminExist() throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE}, COL_ROLE + " = \"ADMIN\"", null, null, null, null);
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE,COL_LAST_NAME}, COL_ROLE + " = \"ADMIN\"", null, null, null, null);
         User user = cursorToUser(c);
 
         if(user == null){
@@ -112,7 +116,7 @@ public class UserRepository {
         else {
             c.moveToFirst();
             //On créé un livre
-            User user = new User(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NAME), c.getString(NUM_COL_LOGIN), c.getString(NUM_COL_PASSWORD), c.getString(NUM_COL_ROLE));
+            User user = new User(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NAME), c.getString(NUM_COL_LOGIN), c.getString(NUM_COL_PASSWORD), c.getString(NUM_COL_ROLE),c.getString(NUM_COL_LAST_NAME));
             //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
             //On ferme le cursor
             c.close();

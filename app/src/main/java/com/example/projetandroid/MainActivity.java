@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private EditText name;
+    private EditText lastName;
     private EditText login;
     private EditText password;
     private EditText password2;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         this.password = (EditText) findViewById(R.id.edt_password);
         this.password2 = (EditText) findViewById(R.id.edt_passwordC);
         this.validation = (TextView) findViewById(R.id.validation);
+        this.lastName = findViewById(R.id.edt_last_name);
         userRepository = new UserRepository(this);
         userRepository.open();
         boolean admin = false;
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         if(this.name.getText().toString().matches("")){
             error.add("il manque le nom \n");
         }
+        if(this.lastName.getText().toString().matches("")){
+            error.add("il manque le prénom \n");
+        }
         if (this.login.getText().toString().matches("")){
             error.add("il manque l'eamil \n");
         }
@@ -74,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(error.isEmpty()){
-            User user = new User(this.name.getText().toString().trim(),this.login.getText().toString().trim(),this.password.getText().toString().trim(),"ADMIN");
+            User user = new User(this.name.getText().toString().trim(),this.lastName.getText().toString().trim(),this.login.getText().toString().trim(),this.password.getText().toString().trim(),"ADMIN");
             userRepository.open();
             userRepository.insert(user);
             User v = userRepository.findUser(this.login.getText().toString().trim());
             userRepository.close();
-            this.validation.setText("Votre utilisateur " + v.getName() + " à bien été créé");
+            this.validation.setText("Votre utilisateur " + v.getName() + " " + v.getLastName() + " à bien été créé");
             startActivity( new Intent(this, LoginActivity.class));
         }
         else {

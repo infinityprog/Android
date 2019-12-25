@@ -24,7 +24,6 @@ public class ChoiceActivity extends AppCompatActivity {
         editor.putString("nav","Comprimé");
         editor.commit();
         startActivity( new Intent(this, HomeActivity.class));
-        finish();
 
     }
 
@@ -34,7 +33,7 @@ public class ChoiceActivity extends AppCompatActivity {
         editor.putString("nav","cuve");
         editor.commit();
         startActivity( new Intent(this, HomeActivity.class));
-        finish();
+
     }
 
     public void navToUniversel(View view) {
@@ -43,6 +42,6 @@ public class ChoiceActivity extends AppCompatActivity {
         editor.putString("nav","universel");
         editor.commit();
         startActivity( new Intent(this, HomeActivity.class));
-        finish();
+
     }
 }

@@ -61,27 +61,10 @@ public class ReadTaskS7 {
     private TextView bits[] ;
     private TextView valeur;
 
-    /* nombre de bits
-    private TextView bit0;
-    private TextView bit1;
-    private TextView bit2;
-    private TextView bit3;
-    private TextView bit4;
-    private TextView bit5;
-    private TextView bit6;
-    private TextView bit7;
+    //Cuve
 
-    private TextView bit8;
-    private TextView bit9;
-    private TextView bit10;
-    private TextView bit11;
-    private TextView bit12;
-    private TextView bit13;
-    private TextView bit14;
-    private TextView bit15;
-
-    private TextView bit16;
-    private TextView bit17;*/
+    private ProgressBar niveau;
+    private TextView pourcent;
 
 
 
@@ -111,6 +94,7 @@ public class ReadTaskS7 {
         readThread = new Thread(plcS7);
     }
 
+    //Comprimé
     public ReadTaskS7(View v, TextView t,TextView version,TextView statut, TextView nbrCPB, TextView nbrBouteille,int dbNumber) {
         vi_main_ui = v;
         tv_main_plc = t;
@@ -144,6 +128,24 @@ public class ReadTaskS7 {
         this.size = size;
         this.position = position;
         this.valeur = valeur;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
+    //Cuve
+
+    //info
+
+
+    public ReadTaskS7(View vi_main_ui,TextView t,TextView version,TextView statut, int dbNumber, ProgressBar niveau, TextView pourcent) {
+        this.vi_main_ui = vi_main_ui;
+        tv_main_plc = t;
+        this.version = version;
+        this.statut = statut;
+        this.dbNumber = dbNumber;
+        this.niveau = niveau;
+        this.pourcent = pourcent;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -317,6 +319,12 @@ public class ReadTaskS7 {
         }
     }
 
+    private void infoCuve(){
+
+        niveau.setProgress(S7.GetWordAt(datasPLC, 16)/10);
+        pourcent.setText(String.valueOf(S7.GetWordAt(datasPLC, 16)/10)+"%");
+    }
+
     private void downloadOnPostExecute() {
         Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est terminé !"
@@ -395,26 +403,10 @@ public class ReadTaskS7 {
                             if(size != null){
                                 write();
                             }
-                            /*int max = 0;
-                            if (size.equals("Word")){
-                                max = 16;
-                            }else
-                            {
-                                max = 8;
+
+                            if(niveau != null){
+                                infoCuve();
                             }
-                            for (int i = 0; i < max ; i++) {
-
-                                System.out.println(S7.GetBitAt(datasPLC, address,i));
-                                if(S7.GetBitAt(datasPLC, address,i)){
-                                    data.add(1);
-                                }
-                                else{
-                                    data.add(0);
-                                }
-
-                            }*/
-
-                            //sendBitMessage();
                         }
                         //Log.i("Variable A.P.I. -> ", String.valueOf(data));
                     }

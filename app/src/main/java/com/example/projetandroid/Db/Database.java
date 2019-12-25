@@ -10,6 +10,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String TABLE = "users";
     private static final String COL_ID = "id_user";
     private static final String COL_NAME = "name";
+    private static final String COL_LAST_NAME = "last_name";
     private static final String COL_LOGIN = "login";
     private static final String COL_PASSWORD = "password";
     private static final String COL_ROLE = "role";
@@ -24,7 +25,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String COL_RACK = "rack";
 
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT NOT NULL, "
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT NOT NULL," + COL_LAST_NAME + " TEXT NOT NULL,  "
             + COL_LOGIN + " TEXT NOT NULL, " + COL_PASSWORD + " TEXT NOT NULL, " + COL_ROLE + " TEXT NOT NULL" + ");"
             + "CREATE TABLE " + TABLE_Automate + " ("
             + COL_ID_automate + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME_automate + " TEXT , "

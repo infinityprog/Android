@@ -8,12 +8,14 @@ public class User {
 
     private int id;
     private String name;
+    private String lastName;
     private String login;
     private String password;
     private String role;
 
-    public User(String name, String login, String password, String role) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public User(String name, String lastName,String login, String password, String role) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         this.name = name;
+        this.lastName = lastName;
         this.login = login;
         this.password = this.SHA1(password);
         this.role = role;
@@ -30,12 +32,13 @@ public class User {
         this.password = this.SHA1(password);
     }
 
-    public User(int id, String name, String login, String password, String role) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public User(int id, String name, String login, String password, String role, String lastName) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = this.SHA1(password);
         this.role = role;
+        this.role = lastName;
     }
 
     public int getId() {
@@ -64,6 +67,14 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setPassword(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException { ;
