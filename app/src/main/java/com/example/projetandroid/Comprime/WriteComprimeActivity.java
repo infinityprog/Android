@@ -28,6 +28,7 @@ public class WriteComprimeActivity extends AppCompatActivity {
     private EditText valeur;
     private TextView txv_address;
     private TextView txv_valeur;
+    private TextView error;
     private ReadTaskS7 readS7;
     private WriteTaskS7 writeS7;
 
@@ -45,6 +46,7 @@ public class WriteComprimeActivity extends AppCompatActivity {
         valeur = findViewById(R.id.edt_valeur);
         txv_address = findViewById(R.id.txv_address);
         txv_valeur =  findViewById(R.id.txv_valeur);
+        error = findViewById(R.id.error);
         SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
         int db = sharedpreferences.getInt("db",-1);
         readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , db,address,statut,size,position,txv_valeur);
@@ -55,7 +57,7 @@ public class WriteComprimeActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        writeS7 = new WriteTaskS7(db,address);
+        writeS7 = new WriteTaskS7(db,address,size);
         writeS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
 
         address.addTextChangedListener(new TextWatcher() {
@@ -133,14 +135,29 @@ public class WriteComprimeActivity extends AppCompatActivity {
                 result = false;
             }
             writeS7.setWriteBool(Integer.parseInt(position.getText().toString()), result);*/
-            double v = Double.valueOf(position.getText().toString());
-            int pos = (int) Math.pow(2,v);
-            System.out.println("valeur exposant : " + pos);
-            writeS7.setWriteBool(pos,Integer.parseInt(valeur.getText().toString()));
+            if(Integer.parseInt(valeur.getText().toString()) < 0 || Integer.parseInt(valeur.getText().toString()) > 1){
+                error.setText("Un bit ne peut être que 0 ou 1");
+            }
+            else if(Integer.parseInt(position.getText().toString()) < 0 || Integer.parseInt(valeur.getText().toString()) > 7){
+                error.setText("La position est comprise entre 0 et 7");
+            }
+            else {
+                double v = Double.valueOf(position.getText().toString());
+                int pos = (int) Math.pow(2, v);
+                System.out.println("valeur exposant : " + pos);
+                writeS7.setWriteBool(pos, Integer.parseInt(valeur.getText().toString()));
+                error.setText("");
+            }
 
         }
         else {
-            writeS7.setWriteWord(Integer.parseInt(valeur.getText().toString()));
+            if(Integer.parseInt(valeur.getText().toString()) >= 0) {
+                writeS7.setWriteWord(Integer.parseInt(valeur.getText().toString()));
+                error.setText("");
+            }
+            else{
+                error.setText("Le nombre doit être positif");
+            }
         }
     }
 }

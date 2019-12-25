@@ -21,7 +21,7 @@ public class ChoiceActivity extends AppCompatActivity {
     public void navToComprime(View view) {
         SharedPreferences sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("nav","comprime");
+        editor.putString("nav","Comprimé");
         editor.commit();
         startActivity( new Intent(this, HomeActivity.class));
         finish();

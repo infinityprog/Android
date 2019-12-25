@@ -2,6 +2,7 @@ package com.example.projetandroid;
 
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.projetandroid.Simatic_S7.S7;
 import com.example.projetandroid.Simatic_S7.S7Client;
@@ -17,13 +18,16 @@ public class WriteTaskS7{
     private byte[] motCommande = new byte[10];
 
     private EditText adrress;
-    private String size;
+    private Spinner size;
     private int dbNumber;
 
-    public WriteTaskS7(int dbNumber, EditText adrress){
+    private boolean write = false;
+
+    public WriteTaskS7(int dbNumber, EditText adrress, Spinner size){
 //monAPI = new AutomateS7();
         this.dbNumber = dbNumber;
         this.adrress = adrress;
+        this.size = size;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         writeThread = new Thread(plcS7);
@@ -60,9 +64,18 @@ public class WriteTaskS7{
                 comS7.SetConnectionType(S7.S7_BASIC);
                 Integer res = comS7.ConnectTo(parConnexion[0],
                         Integer.valueOf(parConnexion[1]),Integer.valueOf(parConnexion[2]));
+                //int lastAddress = Integer.parseInt(adrress.getText().toString());
                 while(isRunning.get() && (res.equals(0))){
-                    if (!(adrress.getText().toString().equals(""))){
-                        Integer writePLC = comS7.WriteArea(S7.S7AreaDB,dbNumber,Integer.parseInt(adrress.getText().toString()),2,motCommande);
+                    if (!(adrress.getText().toString().equals("")) && write && Integer.parseInt(adrress.getText().toString()) > 0){
+
+                        if(size.getSelectedItem().toString().equals("Word")) {
+                            Integer writePLC = comS7.WriteArea(S7.S7AreaDB, dbNumber, Integer.parseInt(adrress.getText().toString()), 2, motCommande);
+                        }
+                        else{
+                            Integer writePLC = comS7.WriteArea(S7.S7AreaDB, dbNumber, Integer.parseInt(adrress.getText().toString()), 1, motCommande);
+                        }
+
+                        write = false;
                     }
 
                     /*if(writePLC.equals(0)) {
@@ -80,10 +93,12 @@ public class WriteTaskS7{
     //Masquage
             if(v==1) motCommande[0] = (byte)(b | motCommande[0]);
             else motCommande[0] = (byte)(~b & motCommande[0]);
+            write = true;
             //S7.SetBitAt(motCommande,/*Integer.parseInt(adrress.getText().toString())*/2,b,v);
         }
 
         public void  setWriteWord(int value){
             S7.SetWordAt(motCommande,0,value);
+            write = true;
         }
     }
