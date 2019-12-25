@@ -2,6 +2,8 @@ package com.example.projetandroid.Comprime;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.projetandroid.R;
+import com.example.projetandroid.ReadTaskS7;
+import com.example.projetandroid.WriteTaskS7;
 
 public class WriteComprimeActivity extends AppCompatActivity {
 
@@ -24,6 +28,8 @@ public class WriteComprimeActivity extends AppCompatActivity {
     private EditText valeur;
     private TextView txv_address;
     private TextView txv_valeur;
+    private ReadTaskS7 readS7;
+    private WriteTaskS7 writeS7;
 
 
     @Override
@@ -39,6 +45,18 @@ public class WriteComprimeActivity extends AppCompatActivity {
         valeur = findViewById(R.id.edt_valeur);
         txv_address = findViewById(R.id.txv_address);
         txv_valeur =  findViewById(R.id.txv_valeur);
+        SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+        int db = sharedpreferences.getInt("db",-1);
+        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , db,address,statut,size,position,txv_valeur);
+        sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
+        readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        writeS7 = new WriteTaskS7(db,address);
+        writeS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
 
         address.addTextChangedListener(new TextWatcher() {
 
@@ -102,6 +120,27 @@ public class WriteComprimeActivity extends AppCompatActivity {
 
     }
 
-    public void valider(View view) {
+    public void valider(View view) throws InterruptedException {
+
+        if (size.getSelectedItem().equals("Bit")){
+
+           /*boolean result;
+            if(valeur.getText().toString().equals("1")){
+                result = true;
+                System.out.println(result);
+            }
+            else {
+                result = false;
+            }
+            writeS7.setWriteBool(Integer.parseInt(position.getText().toString()), result);*/
+            double v = Double.valueOf(position.getText().toString());
+            int pos = (int) Math.pow(2,v);
+            System.out.println("valeur exposant : " + pos);
+            writeS7.setWriteBool(pos,Integer.parseInt(valeur.getText().toString()));
+
+        }
+        else {
+            writeS7.setWriteWord(Integer.parseInt(valeur.getText().toString()));
+        }
     }
 }

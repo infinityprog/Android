@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,11 +46,12 @@ public class ReadTaskS7 {
     private byte[] datasPLC = new byte[512];
 
     private int dbNumber;
-    private int address;
+    private EditText address;
     private ListView lst_Byte;
     private TextView version;
     private TextView statut;
-    private String size;
+    private Spinner size;
+    private EditText position;
     private Context context;
     private ArrayList<Integer> data;
 
@@ -57,8 +59,9 @@ public class ReadTaskS7 {
     private TextView nbrBouteille;
 
     private TextView bits[] ;
+    private TextView valeur;
 
-    // nombre de bits
+    /* nombre de bits
     private TextView bit0;
     private TextView bit1;
     private TextView bit2;
@@ -78,7 +81,7 @@ public class ReadTaskS7 {
     private TextView bit15;
 
     private TextView bit16;
-    private TextView bit17;
+    private TextView bit17;*/
 
 
 
@@ -99,8 +102,8 @@ public class ReadTaskS7 {
         this.version = version;
         this.statut = statut;
         this.lst_Byte = lst_Byte;
-        this.address = valBit;
-        this.size = size;
+        /*this.address = valBit;
+        this.size = size;*/
         this.dbNumber = dbNumber;
         this.context = context;
         comS7 = new S7Client();
@@ -128,6 +131,19 @@ public class ReadTaskS7 {
         this.nbrCPB = nbrCPB;
         this.nbrBouteille = nbrBouteille;
         this.bits = bits;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
+    public ReadTaskS7(View vi_main_ui, int dbNumber, EditText address, TextView statut, Spinner size, EditText position, TextView valeur) {
+        this.vi_main_ui = vi_main_ui;
+        this.dbNumber = dbNumber;
+        this.address = address;
+        this.statut = statut;
+        this.size = size;
+        this.position = position;
+        this.valeur = valeur;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -193,13 +209,13 @@ public class ReadTaskS7 {
         this.dbNumber = dbNumber;
     }
 
-    public int getAddress() {
+    /*public int getAddress() {
         return address;
     }
 
     public void setAddress(int address) {
         this.address = address;
-    }
+    }*/
 
     public ListView getLst_Byte() {
         return lst_Byte;
@@ -225,13 +241,13 @@ public class ReadTaskS7 {
         this.statut = statut;
     }
 
-    public String getSize() {
+   /* public String getSize() {
         return size;
     }
 
     public void setSize(String size) {
         this.size = size;
-    }
+    }*/
 
     private void statusType(int status){
 
@@ -279,6 +295,28 @@ public class ReadTaskS7 {
 
     }
 
+    private void write(){
+
+        if (size.getSelectedItem().toString().equals("Bit")){
+            if(address.getText().toString().equals("") || position.getText().toString().equals("")){
+                valeur.setText("");
+            }
+            else {
+                valeur.setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, Integer.parseInt(address.getText().toString()), Integer.parseInt(position.getText().toString())))));
+                System.out.println("bit : " + String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, Integer.parseInt(address.getText().toString()), Integer.parseInt(position.getText().toString())))));
+            }
+        }
+        else {
+            if(address.getText().toString().equals("")){
+                valeur.setText("");
+            }
+            else {
+                valeur.setText(String.valueOf(S7.GetWordAt(datasPLC, Integer.parseInt(address.getText().toString()))));
+                System.out.println("word : " + String.valueOf(S7.GetWordAt(datasPLC, Integer.parseInt(address.getText().toString()))));
+            }
+        }
+    }
+
     private void downloadOnPostExecute() {
         Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est terminé !"
@@ -310,13 +348,14 @@ public class ReadTaskS7 {
         }
     };
 
+
+
     private class AutomateS7 implements Runnable {
         @Override
         public void run() {
             try {
                 comS7.SetConnectionType(S7.S7_BASIC);
-                Integer res =
-                        comS7.ConnectTo(param[0], Integer.valueOf(param[1]), Integer.valueOf(param[2]));
+                Integer res = comS7.ConnectTo(param[0], Integer.valueOf(param[1]), Integer.valueOf(param[2]));
                 S7OrderCode orderCode = new S7OrderCode();
                 Integer result = comS7.GetOrderCode(orderCode);
                 int numCPU = -1;
@@ -334,7 +373,7 @@ public class ReadTaskS7 {
 
                 while(isRunning.get()){
                     if (res.equals(0)){
-                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,0,18,datasPLC);
+                        int retInfo = comS7.ReadArea(S7.S7AreaDB,dbNumber,0,34,datasPLC);
                         data= new ArrayList<>();
 //int dataB=0;
                         IntByRef status = new IntByRef();
@@ -342,10 +381,19 @@ public class ReadTaskS7 {
                         sendStatusMessage(status.Value);
 
                         if (retInfo ==0) {
-                            nbrCPB.setText(String.valueOf(S7.GetWordAt(datasPLC,14)));
-                            nbrBouteille.setText(String.valueOf(S7.GetWordAt(datasPLC,16)));
+                            if (nbrCPB != null) {
+                                nbrCPB.setText(String.valueOf(S7.GetWordAt(datasPLC, 14)));
+                            }
+
+                            if (nbrBouteille != null) {
+                                nbrBouteille.setText(String.valueOf(S7.GetWordAt(datasPLC, 16)));
+                            }
                             if(bits != null) {
                                 setBits();
+                            }
+
+                            if(size != null){
+                                write();
                             }
                             /*int max = 0;
                             if (size.equals("Word")){

@@ -1,6 +1,7 @@
 package com.example.projetandroid;
 
 import android.util.Log;
+import android.widget.EditText;
 
 import com.example.projetandroid.Simatic_S7.S7;
 import com.example.projetandroid.Simatic_S7.S7Client;
@@ -14,8 +15,15 @@ public class WriteTaskS7{
     private S7Client comS7;
     private String[] parConnexion = new String[10];
     private byte[] motCommande = new byte[10];
-    public WriteTaskS7(){
+
+    private EditText adrress;
+    private String size;
+    private int dbNumber;
+
+    public WriteTaskS7(int dbNumber, EditText adrress){
 //monAPI = new AutomateS7();
+        this.dbNumber = dbNumber;
+        this.adrress = adrress;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         writeThread = new Thread(plcS7);
@@ -36,6 +44,15 @@ public class WriteTaskS7{
         }
     }
 
+    public AtomicBoolean getIsRunning() {
+        return isRunning;
+    }
+
+    public void setIsRunning(AtomicBoolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
+
     private class AutomateS7 implements Runnable{
         @Override
         public void run() {
@@ -44,10 +61,13 @@ public class WriteTaskS7{
                 Integer res = comS7.ConnectTo(parConnexion[0],
                         Integer.valueOf(parConnexion[1]),Integer.valueOf(parConnexion[2]));
                 while(isRunning.get() && (res.equals(0))){
-                    Integer writePLC = comS7.WriteArea(S7.S7AreaDB,25,0,1,motCommande);
-                    if(writePLC.equals(0)) {
-                        Log.i("ret WRITE : ", String.valueOf(res) + "****" + String.valueOf(writePLC));
+                    if (!(adrress.getText().toString().equals(""))){
+                        Integer writePLC = comS7.WriteArea(S7.S7AreaDB,dbNumber,Integer.parseInt(adrress.getText().toString()),2,motCommande);
                     }
+
+                    /*if(writePLC.equals(0)) {
+                        Log.i("ret WRITE : ", String.valueOf(res) + "****" + String.valueOf(writePLC));
+                    }*/
                 }
             }
             catch (Exception e){
@@ -60,5 +80,10 @@ public class WriteTaskS7{
     //Masquage
             if(v==1) motCommande[0] = (byte)(b | motCommande[0]);
             else motCommande[0] = (byte)(~b & motCommande[0]);
+            //S7.SetBitAt(motCommande,/*Integer.parseInt(adrress.getText().toString())*/2,b,v);
+        }
+
+        public void  setWriteWord(int value){
+            S7.SetWordAt(motCommande,0,value);
         }
     }

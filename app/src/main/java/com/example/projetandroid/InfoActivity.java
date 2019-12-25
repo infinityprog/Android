@@ -68,8 +68,7 @@ public class InfoActivity extends AppCompatActivity {
         description.setText(sharedpreferences.getString("nav",null));
         sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         if(sharedpreferences.getString("role",null) == "ADMIN") {
-            writeS7 = new WriteTaskS7();
-            writeS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
+
         }
 
         read.setOnClickListener(new View.OnClickListener() {
