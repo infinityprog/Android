@@ -2,6 +2,8 @@ package com.example.projetandroid.Cuve;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -11,7 +13,8 @@ import com.example.projetandroid.ReadTaskS7;
 
 public class ReadCuveActivity extends AppCompatActivity {
 
-    private TextView bits[] = new TextView[9];
+    private TextView bits[] = new TextView[10];
+    private TextView statut;
     private TextView consAuto;
     private  TextView niveauLiquide;
     private ProgressBar progressLiquide;
@@ -41,6 +44,21 @@ public class ReadCuveActivity extends AppCompatActivity {
         progressLiquide = findViewById(R.id.prg_niv_liquide);
         consManu = findViewById(R.id.txv_consMan);
         pilotageVanne = findViewById(R.id.txv_pilotageVanne);
+        statut = findViewById(R.id.txv_status);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+        int db = sharedpreferences.getInt("db",-1);
+
+        readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),db,statut,bits,progressLiquide,niveauLiquide,consManu,pilotageVanne,consAuto);
+        sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
+        readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }

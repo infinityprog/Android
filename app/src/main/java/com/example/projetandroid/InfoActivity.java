@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.projetandroid.Comprime.ReadComprimeActivity;
 import com.example.projetandroid.Comprime.WriteComprimeActivity;
+import com.example.projetandroid.Cuve.ReadCuveActivity;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -105,7 +106,15 @@ public class InfoActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
                     editor.commit();
-                    startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
+                    sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
+                    description.setText(sharedpreferences.getString("nav",null));
+                    if(sharedpreferences.getString("nav",null) == "Comprimé"){
+                        startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
+                    }
+                    else {
+                        startActivity(new Intent(InfoActivity.this, ReadCuveActivity.class));
+                    }
+
                 }
 
             }

@@ -65,6 +65,9 @@ public class ReadTaskS7 {
 
     private ProgressBar niveau;
     private TextView pourcent;
+    private TextView consManu;
+    private TextView pilotageVanne;
+    private TextView consAuto;
 
 
 
@@ -136,8 +139,6 @@ public class ReadTaskS7 {
     //Cuve
 
     //info
-
-
     public ReadTaskS7(View vi_main_ui,TextView t,TextView version,TextView statut, int dbNumber, ProgressBar niveau, TextView pourcent) {
         this.vi_main_ui = vi_main_ui;
         tv_main_plc = t;
@@ -146,6 +147,23 @@ public class ReadTaskS7 {
         this.dbNumber = dbNumber;
         this.niveau = niveau;
         this.pourcent = pourcent;
+        comS7 = new S7Client();
+        plcS7 = new AutomateS7();
+        readThread = new Thread(plcS7);
+    }
+
+    //read
+
+    public ReadTaskS7(View vi_main_ui, int dbNumber, TextView statut, TextView[] bits, ProgressBar niveau, TextView pourcent, TextView consManu, TextView pilotageVanne, TextView consAuto) {
+        this.vi_main_ui = vi_main_ui;
+        this.dbNumber = dbNumber;
+        this.statut = statut;
+        this.bits = bits;
+        this.niveau = niveau;
+        this.pourcent = pourcent;
+        this.consManu = consManu;
+        this.pilotageVanne = pilotageVanne;
+        this.consAuto = consAuto;
         comS7 = new S7Client();
         plcS7 = new AutomateS7();
         readThread = new Thread(plcS7);
@@ -297,6 +315,22 @@ public class ReadTaskS7 {
 
     }
 
+    private void readCuve(){
+
+        niveau.setProgress(S7.GetWordAt(datasPLC, 16)/10);
+        pourcent.setText(String.valueOf(S7.GetWordAt(datasPLC, 16)));
+        consAuto.setText(String.valueOf(S7.GetWordAt(datasPLC, 18)));
+        consManu.setText(String.valueOf(S7.GetWordAt(datasPLC, 20)));
+        pilotageVanne.setText(String.valueOf(S7.GetWordAt(datasPLC, 22)));
+        for (int i = 1; i < 7 ; i++){
+            bits[i - 1].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 0,i))));
+        }
+
+        for (int i = 1; i < 5 ; i++){
+            bits[i + 5].setText(String.valueOf(convBoolInt(S7.GetBitAt(datasPLC, 1,i))));
+        }
+    }
+
     private void write(){
 
         if (size.getSelectedItem().toString().equals("Bit")){
@@ -396,7 +430,7 @@ public class ReadTaskS7 {
                             if (nbrBouteille != null) {
                                 nbrBouteille.setText(String.valueOf(S7.GetWordAt(datasPLC, 16)));
                             }
-                            if(bits != null) {
+                            if(bits != null && consAuto == null) {
                                 setBits();
                             }
 
@@ -404,8 +438,12 @@ public class ReadTaskS7 {
                                 write();
                             }
 
-                            if(niveau != null){
+                            if(niveau != null && consAuto == null){
                                 infoCuve();
+                            }
+
+                            if(consAuto != null){
+                                readCuve();
                             }
                         }
                         //Log.i("Variable A.P.I. -> ", String.valueOf(data));
