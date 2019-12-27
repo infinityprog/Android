@@ -68,6 +68,10 @@ public class InfoActivity extends AppCompatActivity {
         niveau = findViewById(R.id.niv_liquide);
         pourcent = findViewById(R.id.pourcent);
 
+        sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        if(sharedpreferences.getString("role",null).equals("BASIC")) {
+            write.setVisibility(View.GONE);
+        }
 
         sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
         description.setText(sharedpreferences.getString("nav",null));

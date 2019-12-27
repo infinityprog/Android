@@ -3,19 +3,26 @@ package com.example.projetandroid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.projetandroid.Cuve.ReadCuveActivity;
+import com.example.projetandroid.Fragment.AddUserFragment;
 import com.example.projetandroid.Fragment.ChoiceFragment;
 import com.example.projetandroid.Fragment.MenuFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -25,6 +32,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
     private DrawerLayout  drawerLayout;
     private NavigationView navigationView;
     private TextView title;
+    private TextView name;
 
     //Fragments
 
@@ -42,12 +50,14 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
     private static final int FRAGMENT_UPDATEPASSWORD = 4;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
         SharedPreferences sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
         sharedpreferences.edit().clear().commit();
+
 
         title = findViewById(R.id.title);
 
@@ -58,6 +68,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         this.configureNavigationView();
 
         this.showFirstFragment();
+
     }
 
 
@@ -106,9 +117,10 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
 
         switch (id){
             case R.id.accueil :
-                System.out.println("accueil");
+                this.showFragment(FRAGMENT_ACCUEIL);
                 break;
             case R.id.add_user:
+                this.showFragment(FRAGMENT_ADDUSER);
                 break;
             case R.id.update_user:
                 break;
@@ -117,7 +129,10 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
             case R.id.update_password:
                 break;
             case R.id.logout:
+                this.logOut();
+                finish();
                 break;
+
             default:
                 break;
         }
@@ -144,6 +159,15 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
     // 3 - Configure NavigationView
     private void configureNavigationView(){
         this.navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+        View view = navigationView.getHeaderView(0);
+        name = view.findViewById(R.id.name);
+        SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        if(sharedpreferences.getString("role",null).equals("BASIC")){
+           Menu menu = navigationView.getMenu();
+            MenuItem item = menu.findItem(R.id.users);
+            item.setVisible(false);
+        }
+        name.setText(sharedpreferences.getString("name",null) + " " + sharedpreferences.getString("lastName",null) );
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -153,7 +177,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
                 this.showAcceuil();
                 break;
             case FRAGMENT_ADDUSER:
-                //this.showProfileFragment();
+                this.showAddUser();
                 break;
             case FRAGMENT_UPDATEUSER:
                 //this.showParamsFragment();
@@ -173,11 +197,23 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         if (this.accueil == null) this.accueil = ChoiceFragment.newInstance();
         this.startTransactionFragment(this.accueil);
     }
+
+    private void showAddUser(){
+        if (this.addUser == null) this.addUser = AddUserFragment.newInstance();
+        this.startTransactionFragment(this.addUser);
+        title.setText("Ajouter un utilisateur");
+    }
     private void startTransactionFragment(Fragment fragment){
         if (!fragment.isVisible()){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.activity_main_frame_layout, fragment).commit();
         }
+    }
+
+    private void logOut(){
+        SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        sharedpreferences.edit().clear().commit();
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void showFirstFragment(){

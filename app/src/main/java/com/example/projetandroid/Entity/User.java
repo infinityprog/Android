@@ -38,7 +38,7 @@ public class User {
         this.login = login;
         this.password = this.SHA1(password);
         this.role = role;
-        this.role = lastName;
+        this.lastName = lastName;
     }
 
     public int getId() {

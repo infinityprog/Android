@@ -32,6 +32,11 @@ public class LoginActivity extends AppCompatActivity {
         this.login = (EditText)  findViewById(R.id.edt_login);
         this.password = (EditText) findViewById(R.id.edt_password);
         this.validation = (TextView) findViewById(R.id.validation);
+        SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        if(sharedpreferences.getString("login",null) != null){
+            startActivity( new Intent(this, ChoiceActivity.class));
+            finish();
+        }
     }
 
     public void signIn(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -65,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putInt("id", user.getId());
                 editor.putString("name", user.getName());
+                editor.putString("lastName", user.getLastName());
                 editor.putString("login", user.getLogin());
                 editor.putString("role", user.getRole());
                 editor.commit();
