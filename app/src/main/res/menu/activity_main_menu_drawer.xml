@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/accueil"
+            android:icon="@drawable/home"
+            android:title="Accueil" />
+    </group>
+
+    <item android:title="Utilisateurs"
+        android:id="@+id/users">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/add_user"
+                    android:icon="@drawable/adduser"
+                    android:title="Ajouter un utilisateur" />
+                <item
+                    android:id="@+id/update_user"
+                    android:icon="@drawable/updateuser"
+                    android:title="Modifier un utilisateur" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Compte">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/profil"
+                    android:icon="@drawable/settings"
+                    android:title="Profil" />
+                <item
+                    android:id="@+id/update_password"
+                    android:icon="@drawable/updatepassword"
+                    android:title="Modifier le mot de passe" />
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/logout"
+                    android:title="Déconnexion" />
+            </group>
+        </menu>
+    </item>
+
+
+</menu>

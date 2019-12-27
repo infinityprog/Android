@@ -21,6 +21,7 @@ import com.example.projetandroid.Comprime.ComprimeHomeActivity;
 import com.example.projetandroid.Db.AutomateRepository;
 import com.example.projetandroid.Entity.Automate;
 import com.example.projetandroid.Entity.CustomListAdapter;
+import com.example.projetandroid.Fragment.MenuFragment;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        MenuFragment menu = (MenuFragment) getSupportFragmentManager().findFragmentById(R.id.menu);
+        ((MenuFragment)menu).setTitle("Connectea vous");
         SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         this.ip = (EditText) findViewById(R.id.edt_ip);
         this.slot = (EditText) findViewById(R.id.edt_slot);
