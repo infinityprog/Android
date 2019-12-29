@@ -205,35 +205,16 @@
         android:gravity="bottom"
         >
 
-        <LinearLayout
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activity_main_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <ImageView
-                android:id="@+id/btn_read"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="#1B2EFF"
-                android:src="@drawable/read"/>
-            <ImageView
-                android:id="@+id/btn_deco"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:onClick="deconnexion"
-                android:background="#2D5BFF"
-                android:src="@drawable/deconnexion" />
-
-            <ImageView
-                android:id="@+id/btn_write"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:background="#2D5BFF"
-                android:src="@drawable/write" />
-        </LinearLayout>
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="#fff"
+            app:itemTextColor="#fff"
+            app:menu="@menu/bottom_navigation_menu"
+            android:layout_alignParentBottom="true" />
     </LinearLayout>
 
     </LinearLayout>

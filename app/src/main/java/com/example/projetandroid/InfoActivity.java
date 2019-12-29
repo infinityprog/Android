@@ -1,5 +1,6 @@
 package com.example.projetandroid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -24,8 +26,11 @@ import android.widget.Toast;
 import com.example.projetandroid.Comprime.ReadComprimeActivity;
 import com.example.projetandroid.Comprime.WriteComprimeActivity;
 import com.example.projetandroid.Cuve.ReadCuveActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class InfoActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     private ReadTaskS7 readS7;
     private TextView num;
@@ -54,6 +59,7 @@ public class InfoActivity extends AppCompatActivity {
         SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
         sharedpreferences.edit().clear().commit();
         num = (TextView) findViewById(R.id.txv_name) ;
+        bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation);
         version = (TextView) findViewById(R.id.txv_version);
         statut = (TextView)  findViewById(R.id.txv_status);
         description = (TextView) findViewById(R.id.txv_description);
@@ -61,17 +67,13 @@ public class InfoActivity extends AppCompatActivity {
         nbrCPB = (TextView) findViewById(R.id.txv_nbrCPB);
         nbrBouteille = (TextView) findViewById(R.id.txv_nbrB);
         error = (TextView) findViewById(R.id.error);
-        read = (ImageView) findViewById(R.id.btn_read);
         comprime = findViewById(R.id.layout_comprime);
         cuve = findViewById(R.id.layout_cuve);
-        write = findViewById(R.id.btn_write);
         niveau = findViewById(R.id.niv_liquide);
         pourcent = findViewById(R.id.pourcent);
 
-        sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-        if(sharedpreferences.getString("role",null).equals("BASIC")) {
-            write.setVisibility(View.GONE);
-        }
+        this.configureBottomView();
+
 
         sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
         description.setText(sharedpreferences.getString("nav",null));
@@ -93,11 +95,11 @@ public class InfoActivity extends AppCompatActivity {
         }
 
         sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-        if(sharedpreferences.getString("role",null) == "ADMIN") {
-
+        if(!sharedpreferences.getString("role",null).equals("ADMIN")) {
+                this.bottomNavigationView.getMenu().findItem(R.id.btn_write).setVisible(false);
         }
 
-        read.setOnClickListener(new View.OnClickListener() {
+        /*read.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -141,16 +143,69 @@ public class InfoActivity extends AppCompatActivity {
                 }
 
             }
+        });*/
+    }
+
+    private void configureBottomView(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return InfoActivity.this.updateMainFragment(item.getItemId());
+            }
         });
     }
 
-    public void deconnexion(View view) {
+    private Boolean updateMainFragment(Integer integer){
+        switch (integer) {
+            case R.id.btn_read:
+                this.read();
+                break;
+            case R.id.btn_deco:
+                this.deconnexion();
+                break;
+            case R.id.btn_write:
+                this.write();
+                break;
+        }
+        return true;
     }
 
-    public void write(View view) {
+    public void deconnexion() {
+
+        readS7.Stop();
+        finish();
     }
 
-    public void read(View view) {
+    public void write() {
+        if(dataBlock.getText().toString().equals("")){
+            error.setText("data block ne peut etre vide");
+        }
+        else {
+            SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
+            editor.commit();
+            startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
+        }
+    }
 
+    public void read() {
+
+        if(dataBlock.getText().toString().equals("")){
+            error.setText("data block ne peut etre vide");
+        }
+        else {
+            SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
+            editor.commit();
+            sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
+            description.setText(sharedpreferences.getString("nav", null));
+            if (sharedpreferences.getString("nav", null) == "Comprimé") {
+                startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
+            } else {
+                startActivity(new Intent(InfoActivity.this, ReadCuveActivity.class));
+            }
+        }
     }
 }

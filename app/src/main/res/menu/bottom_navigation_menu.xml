@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_read"
+        android:enabled="true"
+        android:icon="@drawable/read"
+        android:title="@string/menu_read"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/btn_deco"
+        android:enabled="true"
+        android:icon="@drawable/deconnexion"
+        android:title="@string/menu_deco"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/btn_write"
+        android:enabled="true"
+        android:icon="@drawable/write"
+        android:title="@string/menu_write"
+        app:showAsAction="ifRoom" />
+</menu>
