@@ -23,6 +23,7 @@ import com.example.projetandroid.R;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +82,10 @@ public class AddUserFragment extends Fragment {
             public void onClick(View view) {
                 ArrayList<String> error = new ArrayList<>();
 
+                Pattern pattern;
+                final String PASSWORD = ".{4,}";
+                pattern = Pattern.compile(PASSWORD);
+
                 if(name.getText().toString().matches("")){
                     error.add("il manque le nom \n");
                 }
@@ -90,11 +95,14 @@ public class AddUserFragment extends Fragment {
                 if (login.getText().toString().matches("")){
                     error.add("il manque l'eamil \n");
                 }
-                else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(login.getText().toString()).matches()){
+                else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(login.getText().toString().trim()).matches()){
                     error.add("le mail n'est pas au bon format \n");
                 }
                 if ( password.getText().toString().matches("")){
                     error.add("il manque le mot de passe \n");
+                }
+                else if (!pattern.matcher(password.getText().toString()).matches()){
+                    error.add("Le nouveau mot de passe doit avoir ou moin 4 charactères \n");
                 }
                 if ( password2.getText().toString().matches("")){
                     error.add("Vous avez oublié de confirmer le mot de passe \n");

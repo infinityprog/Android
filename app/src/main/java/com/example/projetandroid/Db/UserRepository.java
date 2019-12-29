@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class UserRepository {
 
-    private static final int VERSION_BDD = 1;
+    private static final int VERSION_BDD = 3;
     private static final String NOM_BDD = "users.db";
 
     private static final String TABLE = "users";
@@ -51,6 +51,14 @@ public class UserRepository {
 
     public SQLiteDatabase getBDD(){
         return bdd;
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public long insert(User user){

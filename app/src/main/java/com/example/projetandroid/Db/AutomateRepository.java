@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class AutomateRepository {
 
-    private static final int VERSION_BDD = 1;
+    private static final int VERSION_BDD = 3;
     private static final String NOM_BDD = "users.db";
 
     private static final String TABLE = "automate";
@@ -48,6 +48,14 @@ public class AutomateRepository {
     public void close(){
         //on ferme l'accès à la BDD
         bdd.close();
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public SQLiteDatabase getBDD(){
@@ -84,10 +92,16 @@ public class AutomateRepository {
         return bdd.delete(TABLE, COL_ID + " = " +id, null);
     }
 
-    public ArrayList<Automate> findAll(){
+    public ArrayList<Automate> findAll(int id){
         //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
-        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_DESCRIPTION, COL_IP,COL_RACK,COL_SLOT,COL_ID_USER}, null, null, null, null, null);
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_DESCRIPTION, COL_IP,COL_RACK,COL_SLOT,COL_ID_USER}, COL_ID_USER + " = " +id, null, null, null, null);
         return cursorToList(c);
+    }
+
+    public int findLast(){
+        //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
+        Cursor c = bdd.rawQuery("select max("+COL_ID+") from "+TABLE,null);
+        return cursortToId(c);
     }
 
     //Cette méthode permet de convertir un cursor en un livre
@@ -124,5 +138,19 @@ public class AutomateRepository {
             c.close();
             return automates;
         }
+    }
+
+    private int cursortToId(Cursor c){
+
+        if (c.getCount() == 0) {
+            return -1;
+        }
+        else{
+            c.moveToFirst();
+            int id = c.getInt(NUM_COL_ID);
+            c.close();
+            return id;
+        }
+
     }
 }

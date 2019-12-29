@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper {
 
+
     //users
     private static final String TABLE = "users";
     private static final String COL_ID = "id_user";

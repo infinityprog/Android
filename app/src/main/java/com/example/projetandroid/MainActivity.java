@@ -3,6 +3,7 @@ package com.example.projetandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projetandroid.Db.AutomateRepository;
+import com.example.projetandroid.Db.Database;
 import com.example.projetandroid.Db.UserRepository;
 import com.example.projetandroid.Entity.User;
 
