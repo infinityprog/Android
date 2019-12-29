@@ -135,12 +135,12 @@ public class ChoiceFragment extends Fragment  {
 
     }
 
-    public void navToUniversel(View view) {
+    /*public void navToUniversel(View view) {
         SharedPreferences sharedpreferences = context.getSharedPreferences("navigation", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("nav","universel");
         editor.commit();
         startActivity( new Intent(getContext(), HomeActivity.class));
 
-    }
+    }*/
 }

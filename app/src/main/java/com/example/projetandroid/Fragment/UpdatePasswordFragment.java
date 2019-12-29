@@ -113,7 +113,7 @@ public class UpdatePasswordFragment extends Fragment {
                     SharedPreferences sharedpreferences = getContext().getSharedPreferences("session", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     try {
-                        user.setPassword(oldPassword.getText().toString());
+                        user.setPassword(oldPassword.getText().toString().trim());
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     } catch (NoSuchAlgorithmException e) {
@@ -132,7 +132,7 @@ public class UpdatePasswordFragment extends Fragment {
                         validation.setText("Le mot de passe est incorrect");
                     }else {
                         try {
-                            user.setPassword(password.getText().toString());
+                            user.setPassword(password.getText().toString().trim());
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         } catch (NoSuchAlgorithmException e) {

@@ -71,11 +71,11 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         automateRepository.open();
         if (id == -1) {
-            automateRepository.insert(new Automate(description.getText().toString(), ip.getText().toString(), Integer.parseInt(slot.getText().toString()), Integer.parseInt(rack.getText().toString()), sharedpreferences.getInt("id", -1)));
+            automateRepository.insert(new Automate(description.getText().toString().trim(), ip.getText().toString().trim(), Integer.parseInt(slot.getText().toString().trim()), Integer.parseInt(rack.getText().toString().trim()), sharedpreferences.getInt("id", -1)));
             id = automateRepository.findLast();
         }
         else {
-            automateRepository.update(id,new Automate(description.getText().toString(), ip.getText().toString(), Integer.parseInt(slot.getText().toString()), Integer.parseInt(rack.getText().toString()), sharedpreferences.getInt("id", -1)));
+            automateRepository.update(id,new Automate(description.getText().toString().trim(), ip.getText().toString().trim(), Integer.parseInt(slot.getText().toString().trim()), Integer.parseInt(rack.getText().toString().trim()), sharedpreferences.getInt("id", -1)));
         }
         automates = automateRepository.findAll(sharedpreferences.getInt("id", 0));
         automateRepository.close();
@@ -89,13 +89,12 @@ public class HomeActivity extends AppCompatActivity {
         if(network != null && network.isConnectedOrConnecting()) {
             SharedPreferences sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("ip", ip.getText().toString());
-            editor.putString("slot", slot.getText().toString());
-            editor.putString("rack", rack.getText().toString());
-            editor.putString("description", description.getText().toString());
+            editor.putString("ip", ip.getText().toString().trim());
+            editor.putString("slot", slot.getText().toString().trim());
+            editor.putString("rack", rack.getText().toString().trim());
+            editor.putString("description", description.getText().toString().trim());
             editor.commit();
             startActivity( new Intent(this, InfoActivity.class));
-
         }
 
         else

@@ -32,6 +32,9 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_password);
 
         this.oldPassword = (EditText) findViewById(R.id.edt_old_password);
+        this.oldPassword.setVisibility(View.GONE);
+        TextView labelPassword =  findViewById(R.id.txv_old_password);
+        labelPassword.setVisibility(View.GONE);
         this.password = (EditText) findViewById(R.id.edt_password);
         this.password2 = (EditText) findViewById(R.id.edt_passwordC);
         this.validation = (TextView) findViewById(R.id.validation);
@@ -46,9 +49,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         final String PASSWORD = ".{4,}";
 
         pattern = Pattern.compile(PASSWORD);
-        if ( oldPassword.getText().toString().matches("")){
-            error.add("il manque l'ancien mot de passe \n");
-        }
+
         if ( password.getText().toString().matches("")){
             error.add("il manque le nouveau mot de passe \n");
         }
@@ -66,16 +67,10 @@ public class UpdatePasswordActivity extends AppCompatActivity {
             User user = new User();
             SharedPreferences sharedpreferences = getSharedPreferences("update", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            user.setPassword(oldPassword.getText().toString());
+            user.setPassword(password.getText().toString().trim());
             userRepository.open();
-            User v = userRepository.login(sharedpreferences.getString("login",null),user.getPassword());
-            if(v == null){
-                this.validation.setText("Le mot de passe est incorrect");
-            }else {
-                user.setPassword(password.getText().toString());
-                userRepository.updatePassword(sharedpreferences.getInt("id",-1),user.getPassword());
-                validation.setText("Le mot de passe à bien été modifié");
-            }
+            userRepository.updatePassword(sharedpreferences.getInt("id",-1),user.getPassword());
+            validation.setText("Le mot de passe à bien été modifié");
             userRepository.close();
         }
         else {

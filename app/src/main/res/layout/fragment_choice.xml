@@ -27,12 +27,12 @@
             android:id="@+id/btn_cuve"
             android:text="Cuve"/>
 
-        <Button
+        <!--<Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="50dp"
             android:id="@+id/btn_universel"
-            android:text="Universel"/>
+            android:text="Universel"/>-->
     </LinearLayout>
 
 </FrameLayout>
