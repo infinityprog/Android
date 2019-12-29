@@ -20,18 +20,16 @@ public class AutomateRepository {
     private static final String TABLE = "automate";
     private static final String COL_ID = "id_automate";
     private static final int NUM_COL_ID = 0;
-    private static final String COL_NAME = "name";
-    private static final int NUM_COL_NAME = 1;
     private static final String COL_DESCRIPTION = "description";
-    private static final int NUM_COL_DESCRIPTION = 2;
+    private static final int NUM_COL_DESCRIPTION = 1;
     private static final String COL_IP = "ip";
-    private static final int NUM_COL_IP = 3;
+    private static final int NUM_COL_IP = 2;
     private static final String COL_SLOT = "slot";
-    private static final int NUM_COL_SLOT = 4;
+    private static final int NUM_COL_SLOT = 3;
     private static final String COL_RACK = "rack";
-    private static final int NUM_COL_RACK = 5;
+    private static final int NUM_COL_RACK = 4;
     private static final String COL_ID_USER = "id_user";
-    private static final int NUM_COL_ID_USER = 6;
+    private static final int NUM_COL_ID_USER = 5;
 
     private SQLiteDatabase bdd;
 
@@ -60,7 +58,6 @@ public class AutomateRepository {
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
         //on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
-        values.put(COL_NAME, automate.getName());
         values.put(COL_DESCRIPTION, automate.getDescription());
         values.put(COL_IP, automate.getIp());
         values.put(COL_RACK, automate.getRack());
@@ -74,7 +71,6 @@ public class AutomateRepository {
         //La mise à jour d'un livre dans la BDD fonctionne plus ou moins comme une insertion
         //il faut simplement préciser quel livre on doit mettre à jour grâce à l'ID
         ContentValues values = new ContentValues();
-        values.put(COL_NAME, automate.getName());
         values.put(COL_DESCRIPTION, automate.getDescription());
         values.put(COL_IP, automate.getIp());
         values.put(COL_RACK, automate.getRack());
@@ -88,9 +84,9 @@ public class AutomateRepository {
         return bdd.delete(TABLE, COL_ID + " = " +id, null);
     }
 
-    public ArrayList<Automate> find(){
+    public ArrayList<Automate> findAll(){
         //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
-        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_DESCRIPTION, COL_IP,COL_RACK,COL_SLOT,COL_ID_USER}, null, null, null, null, null);
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_DESCRIPTION, COL_IP,COL_RACK,COL_SLOT,COL_ID_USER}, null, null, null, null, null);
         return cursorToList(c);
     }
 
@@ -105,7 +101,7 @@ public class AutomateRepository {
         else {
             c.moveToFirst();
             //On créé un livre
-            Automate automate = new Automate(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NAME), c.getString(NUM_COL_DESCRIPTION), c.getString(NUM_COL_IP), c.getInt(NUM_COL_RACK),c.getInt(NUM_COL_SLOT),c.getInt(NUM_COL_ID_USER));
+            Automate automate = new Automate(c.getInt(NUM_COL_ID), c.getString(NUM_COL_DESCRIPTION), c.getString(NUM_COL_IP), c.getInt(NUM_COL_RACK),c.getInt(NUM_COL_SLOT),c.getInt(NUM_COL_ID_USER));
             //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
             //On ferme le cursor
             c.close();
@@ -123,7 +119,7 @@ public class AutomateRepository {
         }
         else{
             while (c.moveToNext()){
-                automates.add(new Automate(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NAME), c.getString(NUM_COL_DESCRIPTION), c.getString(NUM_COL_IP), c.getInt(NUM_COL_RACK),c.getInt(NUM_COL_SLOT),c.getInt(NUM_COL_ID_USER)));
+                automates.add(new Automate(c.getInt(NUM_COL_ID), c.getString(NUM_COL_DESCRIPTION), c.getString(NUM_COL_IP), c.getInt(NUM_COL_RACK),c.getInt(NUM_COL_SLOT),c.getInt(NUM_COL_ID_USER)));
             }
             c.close();
             return automates;

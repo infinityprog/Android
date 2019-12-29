@@ -41,7 +41,6 @@ public class UsersAdaptater extends ArrayAdapter<User> {
 
         TextView txt_name = (TextView) convertView.findViewById(R.id.txt_name);
         txt_name.setText(users.get(position).getName() + " " +users.get(position).getLastName() );
-        System.out.println(users.get(position).getName() + " " +users.get(position).getLastName() );
 
         TextView login = (TextView) convertView.findViewById(R.id.txt_login);
         login.setText(users.get(position).getLogin());

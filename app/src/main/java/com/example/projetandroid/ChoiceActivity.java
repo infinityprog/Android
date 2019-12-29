@@ -26,6 +26,8 @@ import com.example.projetandroid.Fragment.AddUserFragment;
 import com.example.projetandroid.Fragment.ChoiceFragment;
 import com.example.projetandroid.Fragment.ListUsersFragment;
 import com.example.projetandroid.Fragment.MenuFragment;
+import com.example.projetandroid.Fragment.ProfilFragment;
+import com.example.projetandroid.Fragment.UpdatePasswordFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class ChoiceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
@@ -49,6 +51,8 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
     private static final int FRAGMENT_UPDATEUSER = 2;
     private static final int FRAGMENT_PROFIL = 3;
     private static final int FRAGMENT_UPDATEPASSWORD = 4;
+
+    public static final int OPEN_NEW_ACTIVITY = 10;
 
 
 
@@ -84,8 +88,10 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
     public void navToUniversel(View view) {
         SharedPreferences sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
@@ -127,8 +133,10 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
                 this.showFragment(FRAGMENT_UPDATEUSER);
                 break;
             case R.id.profil :
+                this.showFragment(FRAGMENT_PROFIL);
                 break;
             case R.id.update_password:
+                this.showFragment(FRAGMENT_UPDATEPASSWORD);
                 break;
             case R.id.logout:
                 this.logOut();
@@ -185,10 +193,10 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
                 this.showAllUser();
                 break;
             case FRAGMENT_PROFIL :
-                //this.showNewsFragment();
+                this.showProfil();
                 break;
             case FRAGMENT_UPDATEPASSWORD:
-                //this.showProfileFragment();
+                this.showUpdatePassword();
                 break;
             default:
                 break;
@@ -211,12 +219,29 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         this.startTransactionFragment(this.updateUser);
         title.setText("Liste des utilisateurs");
     }
+
+    private void showProfil(){
+        if (this.profil == null) this.profil = ProfilFragment.newInstance();
+        ((ProfilFragment)this.profil).setNav(navigationView);
+        this.startTransactionFragment(this.profil);
+        title.setText("Modifier mes information");
+    }
+
+    private void showUpdatePassword(){
+        if (this.updatePassword == null) this.updatePassword = UpdatePasswordFragment.newInstance();
+        this.startTransactionFragment(this.updatePassword);
+        title.setText("Modifier votre mot de passe");
+    }
+
+
     private void startTransactionFragment(Fragment fragment){
         if (!fragment.isVisible()){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.activity_main_frame_layout, fragment).commit();
         }
     }
+
+
 
     private void logOut(){
         SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);

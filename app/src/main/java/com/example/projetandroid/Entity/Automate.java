@@ -3,16 +3,14 @@ package com.example.projetandroid.Entity;
 public class Automate {
 
     private int id;
-    private String name;
     private String description;
     private String ip;
     private int slot;
     private int rack;
     private int idUser;
 
-    public Automate(int id, String name, String description, String ip, int slot, int rack, int idUser) {
+    public Automate(int id, String description, String ip, int slot, int rack, int idUser) {
         this.id = id;
-        this.name = name;
         this.description = description;
         this.ip = ip;
         this.slot = slot;
@@ -20,8 +18,7 @@ public class Automate {
         this.idUser = idUser;
     }
 
-    public Automate(String name, String description, String ip, int slot, int rack, int idUser) {
-        this.name = name;
+    public Automate(String description, String ip, int slot, int rack, int idUser) {
         this.description = description;
         this.ip = ip;
         this.slot = slot;
@@ -29,8 +26,7 @@ public class Automate {
         this.idUser = idUser;
     }
 
-    public Automate(String name, String ip, int slot, int rack, int idUser) {
-        this.name = name;
+    public Automate( String ip, int slot, int rack, int idUser) {
         this.ip = ip;
         this.slot = slot;
         this.rack = rack;
@@ -45,13 +41,6 @@ public class Automate {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
@@ -95,6 +84,6 @@ public class Automate {
 
     @Override
     public String toString() {
-        return name + " " + description + " " + ip + " r: " + rack + " s:" + slot;
+        return description + " " + ip + " r: " + rack + " s:" + slot;
     }
 }

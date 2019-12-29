@@ -42,8 +42,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        MenuFragment menu = (MenuFragment) getSupportFragmentManager().findFragmentById(R.id.menu);
-        ((MenuFragment)menu).setTitle("Connectea vous");
         SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         this.ip = (EditText) findViewById(R.id.edt_ip);
         this.slot = (EditText) findViewById(R.id.edt_slot);
@@ -52,8 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         this.list = (ListView) findViewById(R.id.lst_automate);
         automateRepository = new AutomateRepository(this);
         automates = new ArrayList<>();
-        automates.add(new Automate(1,"ev5","cuve","192.168.25.26",1,2,sharedpreferences.getInt("id",-1)));
-        automates.add(new Automate(1,"ev5","cuve","192.168.25.56",1,2,sharedpreferences.getInt("id",-1)));
+        automates = automateRepository.findAll();
         CustomListAdapter adapter = new CustomListAdapter(getApplicationContext(), automates);
         this.list.setAdapter(adapter);
         this.list.setOnItemClickListener(listview_listerner);
@@ -63,27 +60,13 @@ public class HomeActivity extends AppCompatActivity {
 
     public void save(View view) throws InterruptedException {
 
-        /*if(network != null && network.isConnectedOrConnecting())
-        {
-            readS7 = new ReadTaskS7(view);
-            readS7.Start("192.168.10.130","0", "2");
-            while (!readS7.isFinish())
-            try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(readS7.getName() + "hugo");
-        }
-        else
-        {
-            Toast.makeText(this,"! Connexion réseau IMPOSSIBLE !",Toast.LENGTH_SHORT).show();
-        }
-        /*SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        SharedPreferences sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
         automateRepository.open();
-        automateRepository.insert(new Automate("name",description.getText().toString(),ip.getText().toString(), Integer.parseInt(slot.getText().toString()),Integer.parseInt(rack.getText().toString()),sharedpreferences.getInt("id",-1)));
-    */}
+        automateRepository.insert(new Automate(description.getText().toString(),ip.getText().toString(), Integer.parseInt(slot.getText().toString()),Integer.parseInt(rack.getText().toString()),sharedpreferences.getInt("id",-1)));
+        automates = automateRepository.findAll();
+        CustomListAdapter adapter = new CustomListAdapter(getApplicationContext(), automates);
+        this.list.setAdapter(adapter);
+    }
 
     public void connexion(View view) {
         if(network != null && network.isConnectedOrConnecting()) {

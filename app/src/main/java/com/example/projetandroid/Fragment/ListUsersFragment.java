@@ -40,6 +40,7 @@ public class ListUsersFragment extends Fragment {
     private UserRepository userRepository;
     private ArrayList<User> listUser;
     private OnFragmentInteractionListener mListener;
+    private ListView users;
 
     public ListUsersFragment() {
         // Required empty public constructor
@@ -71,7 +72,7 @@ public class ListUsersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_users, container, false);
-        ListView users = view.findViewById(R.id.list_users);
+        users = view.findViewById(R.id.list_users);
         userRepository = new UserRepository(getContext());
         userRepository.open();
         try {
@@ -125,7 +126,25 @@ public class ListUsersFragment extends Fragment {
             editor.putString("login", listUser.get(position).getLogin());
             editor.putString("role", listUser.get(position).getRole());
             editor.commit();
-            startActivity( new Intent(getActivity(), UpdateUsersActivity.class));
+            Intent intent = new Intent(getActivity(), UpdateUsersActivity.class);
+            startActivity(intent);
         }
     };
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userRepository.open();
+        try {
+            listUser = userRepository.findAll();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        UsersAdaptater adapter = new UsersAdaptater(getContext(),listUser);
+        userRepository.close();
+        users.setAdapter(adapter);
+    }
 }

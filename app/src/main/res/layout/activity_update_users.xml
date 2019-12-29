@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
+        android:id="@+id/title"
         android:text="Modifier les informations"
         android:textSize="30sp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -29,11 +29,10 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text=""
             android:id="@+id/validation"
             android:layout_marginBottom="50dp"
             android:textSize="15sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            />
         <LinearLayout
             android:layout_width="250dp"
             android:layout_height="wrap_content"
@@ -114,25 +113,43 @@
             android:layout_width="250dp"
             android:layout_marginTop="50dp"
             android:layout_height="wrap_content">
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_delete"
-            android:layout_marginHorizontal="15dp"
-            android:background="@drawable/delete"
-            />
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_delete"
+                    android:onClick="delete"
+                    android:background="@drawable/delete"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
                 android:id="@+id/btn_password"
-                android:layout_marginHorizontal="15dp"
-                android:background="@drawable/password"/>
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_update"
-                android:layout_marginHorizontal="15dp"
-                android:background="@drawable/update"/>
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="updatePassword"
+                    android:background="@drawable/password"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_update"
+                    android:onClick="update"
+                    android:background="@drawable/update"/>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

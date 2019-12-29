@@ -72,11 +72,19 @@ public class UserRepository {
         ContentValues values = new ContentValues();
         values.put(COL_NAME, user.getName());
         values.put(COL_LOGIN, user.getLogin());
-        values.put(COL_PASSWORD, user.getPassword());
+        //values.put(COL_PASSWORD, user.getPassword());
         values.put(COL_ROLE, user.getRole());
         values.put(COL_LAST_NAME,user.getLastName());
         return bdd.update(TABLE, values, COL_ID + " = " +id, null);
     }
+    public int updatePassword(int id, String password){
+        //La mise à jour d'un livre dans la BDD fonctionne plus ou moins comme une insertion
+        //il faut simplement préciser quel livre on doit mettre à jour grâce à l'ID
+        ContentValues values = new ContentValues();
+        values.put(COL_PASSWORD, password);
+        return bdd.update(TABLE, values, COL_ID + " = " +id, null);
+    }
+
 
     public int delete(int id){
         //Suppression d'un livre de la BDD grâce à l'ID

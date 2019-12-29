@@ -17,6 +17,7 @@ import com.example.projetandroid.Entity.User;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
     public void valid(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         ArrayList<String> error = new ArrayList<>();
 
+        Pattern pattern;
+        final String PASSWORD = ".{4,}";
+        pattern = Pattern.compile(PASSWORD);
+
         if(this.name.getText().toString().matches("")){
             error.add("il manque le nom \n");
         }
@@ -68,8 +73,14 @@ public class MainActivity extends AppCompatActivity {
         if (this.login.getText().toString().matches("")){
             error.add("il manque l'eamil \n");
         }
+        else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(login.getText().toString().trim()).matches()){
+            error.add("le mail n'est pas au bon format \n");
+        }
         if ( this.password.getText().toString().matches("")){
             error.add("il manque le mot de passe \n");
+        }
+        else if (!pattern.matcher(password.getText().toString()).matches()){
+            error.add("Le nouveau mot de passe doit avoir ou moin 4 charactères \n");
         }
         if ( this.password2.getText().toString().matches("")){
             error.add("Vous avez oublié de confirmer le mot de passe \n");

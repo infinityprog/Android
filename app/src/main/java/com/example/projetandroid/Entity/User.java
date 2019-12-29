@@ -21,6 +21,16 @@ public class User {
         this.role = role;
     }
 
+    public User() {
+    }
+
+    public User(String name, String lastName, String login, String role) {
+        this.name = name;
+        this.lastName = lastName;
+        this.login = login;
+        this.role = role;
+    }
+
     public User(String name, String login, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         this.name = name;
         this.login = login;

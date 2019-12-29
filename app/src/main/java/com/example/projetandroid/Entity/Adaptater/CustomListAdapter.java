@@ -41,8 +41,6 @@ public class CustomListAdapter extends ArrayAdapter<Automate> {
             convertView = (LinearLayout) convertView;
         }
 
-        TextView txt_name = (TextView) convertView.findViewById(R.id.txt_name);
-        txt_name.setText(automates.get(position).getName());
 
         TextView txt_description = (TextView) convertView.findViewById(R.id.txt_description);
         txt_description.setText(automates.get(position).getDescription());

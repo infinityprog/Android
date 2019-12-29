@@ -18,7 +18,6 @@ public class Database extends SQLiteOpenHelper {
     //Automate
     private static final String TABLE_Automate = "automate";
     private static final String COL_ID_automate = "id_automate";
-    private static final String COL_NAME_automate = "name";
     private static final String COL_DESCRIPTION = "description";
     private static final String COL_IP = "ip";
     private static final String COL_SLOT = "slot";
@@ -26,11 +25,12 @@ public class Database extends SQLiteOpenHelper {
 
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME + " TEXT NOT NULL," + COL_LAST_NAME + " TEXT NOT NULL,  "
-            + COL_LOGIN + " TEXT NOT NULL, " + COL_PASSWORD + " TEXT NOT NULL, " + COL_ROLE + " TEXT NOT NULL" + ");"
-            + "CREATE TABLE " + TABLE_Automate + " ("
-            + COL_ID_automate + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NAME_automate + " TEXT , "
-            + COL_DESCRIPTION + " TEXT , " + COL_IP + " TEXT , " + COL_SLOT + " INTEGER NOT NULL"
-            + COL_RACK + " INTEGER NOT NULL , " + COL_ID + " INTEGER FOREIGN KEY);";
+            + COL_LOGIN + " TEXT NOT NULL, " + COL_PASSWORD + " TEXT NOT NULL, " + COL_ROLE + " TEXT NOT NULL" + ");";
+
+    private static final String CREATE_BDD_AUTOMATE = "CREATE TABLE " + TABLE_Automate + " ("
+            + COL_ID_automate + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_DESCRIPTION + " TEXT , " + COL_IP + " TEXT , " + COL_SLOT + " INTEGER NOT NULL,"
+            + COL_RACK + " INTEGER NOT NULL , " + COL_ID + " INTEGER, constraint fk_automate foreign key ("+COL_ID+") references ["+TABLE+"] ("+COL_ID+"));";
 
     public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -40,6 +40,8 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //on crée la table à partir de la requête écrite dans la variable CREATE_BDD
         db.execSQL(CREATE_BDD);
+        db.execSQL(CREATE_BDD_AUTOMATE);
+        System.out.println("cree data base");
     }
 
     @Override
