@@ -2,7 +2,6 @@ package com.example.projetandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,16 +10,14 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.projetandroid.Comprime.ComprimeHomeActivity;
 import com.example.projetandroid.Db.AutomateRepository;
 import com.example.projetandroid.Entity.Automate;
-import com.example.projetandroid.Entity.CustomListAdapter;
+import com.example.projetandroid.Entity.Adaptater.CustomListAdapter;
 import com.example.projetandroid.Fragment.MenuFragment;
 
 import java.util.ArrayList;

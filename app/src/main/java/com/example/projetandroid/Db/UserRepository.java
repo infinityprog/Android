@@ -9,6 +9,7 @@ import com.example.projetandroid.Entity.User;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class UserRepository {
 
@@ -93,6 +94,11 @@ public class UserRepository {
         return cursorToUser(c);
     }
 
+    public ArrayList<User> findAll() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE,COL_LAST_NAME}, null, null, null, null, null);
+        return cursorToList(c);
+    }
+
     public boolean adminExist() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Cursor c = bdd.query(TABLE, new String[] {COL_ID, COL_NAME, COL_LOGIN, COL_PASSWORD,COL_ROLE,COL_LAST_NAME}, COL_ROLE + " = \"ADMIN\"", null, null, null, null);
         User user = cursorToUser(c);
@@ -123,6 +129,21 @@ public class UserRepository {
 
             //On retourne le livre
             return user;
+        }
+    }
+
+    private ArrayList<User> cursorToList(Cursor c) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        ArrayList<User> users = new ArrayList<>();
+        if (c.getCount() == 0) {
+            return null;
+        }
+        else{
+            while (c.moveToNext()){
+                users.add(new User(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NAME), c.getString(NUM_COL_LOGIN), c.getString(NUM_COL_PASSWORD), c.getString(NUM_COL_ROLE),c.getString(NUM_COL_LAST_NAME)));
+            }
+            c.close();
+            return users;
         }
     }
 }

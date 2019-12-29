@@ -1,22 +1,19 @@
 package com.example.projetandroid;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.projetandroid.Entity.BitAdaptater;
+import com.example.projetandroid.Entity.Adaptater.BitAdaptater;
 import com.example.projetandroid.Simatic_S7.IntByRef;
 import com.example.projetandroid.Simatic_S7.S7;
 import com.example.projetandroid.Simatic_S7.S7Client;

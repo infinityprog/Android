@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.projetandroid.Cuve.ReadCuveActivity;
 import com.example.projetandroid.Fragment.AddUserFragment;
 import com.example.projetandroid.Fragment.ChoiceFragment;
+import com.example.projetandroid.Fragment.ListUsersFragment;
 import com.example.projetandroid.Fragment.MenuFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -123,6 +124,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
                 this.showFragment(FRAGMENT_ADDUSER);
                 break;
             case R.id.update_user:
+                this.showFragment(FRAGMENT_UPDATEUSER);
                 break;
             case R.id.profil :
                 break;
@@ -180,7 +182,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
                 this.showAddUser();
                 break;
             case FRAGMENT_UPDATEUSER:
-                //this.showParamsFragment();
+                this.showAllUser();
                 break;
             case FRAGMENT_PROFIL :
                 //this.showNewsFragment();
@@ -202,6 +204,12 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         if (this.addUser == null) this.addUser = AddUserFragment.newInstance();
         this.startTransactionFragment(this.addUser);
         title.setText("Ajouter un utilisateur");
+    }
+
+    private void showAllUser(){
+        if (this.updateUser == null) this.updateUser = ListUsersFragment.newInstance();
+        this.startTransactionFragment(this.updateUser);
+        title.setText("Liste des utilisateurs");
     }
     private void startTransactionFragment(Fragment fragment){
         if (!fragment.isVisible()){

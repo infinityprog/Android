@@ -1,4 +1,4 @@
-package com.example.projetandroid.Entity;
+package com.example.projetandroid.Entity.Adaptater;
 
 import android.content.Context;
 import android.graphics.Movie;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projetandroid.Entity.Automate;
 import com.example.projetandroid.R;
 
 import java.util.ArrayList;
