@@ -19,4 +19,10 @@
         android:icon="@drawable/write"
         android:title="@string/menu_write"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/btn_web"
+        android:enabled="true"
+        android:icon="@drawable/web"
+        android:title="@string/menu_web"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -66,6 +66,11 @@ public class ReadTaskS7 {
     private TextView pilotageVanne;
     private TextView consAuto;
 
+    //info de base
+    private TextView type;
+    private TextView serialNumber;
+    private TextView moduleName;
+
 
 
     public ReadTaskS7(View v, Button b, ProgressBar p, TextView t) {
@@ -95,9 +100,12 @@ public class ReadTaskS7 {
     }
 
     //Comprimé
-    public ReadTaskS7(View v, TextView t,TextView version,TextView statut, TextView nbrCPB, TextView nbrBouteille,int dbNumber) {
+    public ReadTaskS7(View v,TextView type, TextView moduleName,TextView serialNumber, TextView t,TextView version,TextView statut, TextView nbrCPB, TextView nbrBouteille,int dbNumber) {
         vi_main_ui = v;
         tv_main_plc = t;
+        this.type = type;
+        this.moduleName = moduleName;
+        this.serialNumber = serialNumber;
         this.version = version;
         this.statut = statut;
         this.nbrCPB = nbrCPB;
@@ -136,8 +144,11 @@ public class ReadTaskS7 {
     //Cuve
 
     //info
-    public ReadTaskS7(View vi_main_ui,TextView t,TextView version,TextView statut, int dbNumber, ProgressBar niveau, TextView pourcent) {
+    public ReadTaskS7(View vi_main_ui,TextView type, TextView moduleName,TextView serialNumber ,TextView t,TextView version,TextView statut, int dbNumber, ProgressBar niveau, TextView pourcent) {
         this.vi_main_ui = vi_main_ui;
+        this.type = type;
+        this.moduleName = moduleName;
+        this.serialNumber = serialNumber;
         tv_main_plc = t;
         this.version = version;
         this.statut = statut;
@@ -183,9 +194,9 @@ public class ReadTaskS7 {
     }
 
     private void downloadOnPreExecute(int t) {
-        Toast.makeText(vi_main_ui.getContext(),
+        /*Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est démarré !" + "\n"
-                , Toast.LENGTH_SHORT).show();
+                , Toast.LENGTH_SHORT).show();*/
         if(t == 0){
             tv_main_plc.setText("Erreur connexion automate");
             this.name = ("Erreur connexion automate");
@@ -357,11 +368,11 @@ public class ReadTaskS7 {
     }
 
     private void downloadOnPostExecute() {
-        Toast.makeText(vi_main_ui.getContext(),
+        /*Toast.makeText(vi_main_ui.getContext(),
                 "Le traitement de la tâche de fond est terminé !"
-                , Toast.LENGTH_LONG).show();
+                , Toast.LENGTH_LONG).show();*/
         //pb_main_progressionS7.setProgress(0);
-        tv_main_plc.setText("PLC : /!\\");
+        //tv_main_plc.setText("PLC : /!\\");
     }
 
     private Handler monHandler = new Handler() {
@@ -408,6 +419,9 @@ public class ReadTaskS7 {
                 comS7.GetCpuInfo(info);
                 if(getVersion() != null) {
                     getVersion().setText(info.ASName());
+                    type.setText(info.ModuleTypeName());
+                    serialNumber.setText(info.SerialNumber());
+                    moduleName.setText(info.ModuleName());
                 }
 
                 while(isRunning.get()){

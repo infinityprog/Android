@@ -40,6 +40,9 @@ public class InfoActivity extends AppCompatActivity {
     private LinearLayout comprime;
     private LinearLayout cuve;
     private TextView error;
+    private TextView type;
+    private TextView serialNumber;
+    private TextView moduleName;
 
     private EditText dataBlock;
     private TextView nbrCPB;
@@ -66,6 +69,9 @@ public class InfoActivity extends AppCompatActivity {
         dataBlock = (EditText) findViewById(R.id.edt_dtblck);
         nbrCPB = (TextView) findViewById(R.id.txv_nbrCPB);
         nbrBouteille = (TextView) findViewById(R.id.txv_nbrB);
+        type = (TextView) findViewById(R.id.type);
+        moduleName = (TextView) findViewById(R.id.module_name);
+        serialNumber = (TextView) findViewById(R.id.serial_number);
         error = (TextView) findViewById(R.id.error);
         comprime = findViewById(R.id.layout_comprime);
         cuve = findViewById(R.id.layout_cuve);
@@ -79,11 +85,11 @@ public class InfoActivity extends AppCompatActivity {
         description.setText(sharedpreferences.getString("nav",null));
         if(sharedpreferences.getString("nav",null) == "Comprimé"){
             cuve.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),type,moduleName,serialNumber , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
         }
         else{
             comprime.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) , num,version,statut,Integer.parseInt(dataBlock.getText().toString()),niveau,pourcent);
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) ,type,moduleName,serialNumber  , num,version,statut,Integer.parseInt(dataBlock.getText().toString()),niveau,pourcent);
         }
 
         sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
@@ -99,51 +105,7 @@ public class InfoActivity extends AppCompatActivity {
                 this.bottomNavigationView.getMenu().findItem(R.id.btn_write).setVisible(false);
         }
 
-        /*read.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-
-                if(dataBlock.getText().toString().equals("")){
-                    error.setText("data block ne peut etre vide");
-                }
-                else {
-                    SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
-                    editor.commit();
-                    sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
-                    description.setText(sharedpreferences.getString("nav",null));
-                    if(sharedpreferences.getString("nav",null) == "Comprimé"){
-                        startActivity(new Intent(InfoActivity.this, ReadComprimeActivity.class));
-                    }
-                    else {
-                        startActivity(new Intent(InfoActivity.this, ReadCuveActivity.class));
-                    }
-
-                }
-
-            }
-        });
-
-        write.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if(dataBlock.getText().toString().equals("")){
-                    error.setText("data block ne peut etre vide");
-                }
-                else {
-                    SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
-                    editor.commit();
-                    startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
-                }
-
-            }
-        });*/
     }
 
     private void configureBottomView(){
@@ -166,6 +128,9 @@ public class InfoActivity extends AppCompatActivity {
             case R.id.btn_write:
                 this.write();
                 break;
+            case R.id.btn_web:
+                this.write();
+                break;
         }
         return true;
     }
@@ -186,7 +151,12 @@ public class InfoActivity extends AppCompatActivity {
             editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
             editor.commit();
             startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
+            readS7.Stop();
         }
+    }
+
+    public void web(){
+
     }
 
     public void read() {
@@ -206,6 +176,40 @@ public class InfoActivity extends AppCompatActivity {
             } else {
                 startActivity(new Intent(InfoActivity.this, ReadCuveActivity.class));
             }
+            readS7.Stop();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
+        sharedpreferences.edit().clear().commit();
+
+        sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
+        description.setText(sharedpreferences.getString("nav",null));
+        if(sharedpreferences.getString("nav",null) == "Comprimé"){
+            cuve.setVisibility(View.GONE);
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),type,moduleName,serialNumber , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
+        }
+        else{
+            comprime.setVisibility(View.GONE);
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) ,type,moduleName,serialNumber  , num,version,statut,Integer.parseInt(dataBlock.getText().toString()),niveau,pourcent);
+        }
+
+        sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
+        readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
+        if(!sharedpreferences.getString("role",null).equals("ADMIN")) {
+            this.bottomNavigationView.getMenu().findItem(R.id.btn_write).setVisible(false);
+        }
+
+        super.onRestart();
+
     }
 }
