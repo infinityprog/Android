@@ -169,13 +169,13 @@ public class InfoActivity extends AppCompatActivity {
             editor.putInt("db", Integer.parseInt(dataBlock.getText().toString().trim()));
             editor.commit();
             startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
-            readS7.Stop();
+
         }
     }
 
     public void web(){
         startActivity(new Intent(this, WebActivity.class));
-        readS7.Stop();
+
     }
 
     public void read() {
@@ -195,25 +195,18 @@ public class InfoActivity extends AppCompatActivity {
             } else {
                 startActivity(new Intent(InfoActivity.this, ReadCuveActivity.class));
             }
-            readS7.Stop();
+
         }
     }
 
-    @Override
+    /*@Override
     protected void onRestart() {
+
+        super.onRestart();
+        System.out.println("debut activiter");
         SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
         sharedpreferences.edit().clear().commit();
 
-        sharedpreferences = getSharedPreferences("navigation", Context.MODE_PRIVATE);
-        description.setText(sharedpreferences.getString("nav",null));
-        if(sharedpreferences.getString("nav",null) == "Comprimé"){
-            cuve.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),type,moduleName,serialNumber , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
-        }
-        else{
-            comprime.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) ,type,moduleName,serialNumber  , num,version,statut,Integer.parseInt(dataBlock.getText().toString()),niveau,pourcent);
-        }
 
         sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
         readS7.Start(sharedpreferences.getString("ip",null), sharedpreferences.getString("rack",null), sharedpreferences.getString("slot",null));
@@ -223,12 +216,16 @@ public class InfoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        sharedpreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-        if(!sharedpreferences.getString("role",null).equals("ADMIN")) {
-            this.bottomNavigationView.getMenu().findItem(R.id.btn_write).setVisible(false);
-        }
 
-        super.onRestart();
 
-    }
+        System.out.println("voir activiter");
+
+
+    }*/
+
+   /* @Override
+    protected void onStart() {
+        System.out.println("voir activiter");
+        super.onStart();
+    }*/
 }
