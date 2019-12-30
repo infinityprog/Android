@@ -206,6 +206,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
     private void showAcceuil(){
         if (this.accueil == null) this.accueil = ChoiceFragment.newInstance();
         this.startTransactionFragment(this.accueil);
+        title.setText("Choisisez votre projet");
     }
 
     private void showAddUser(){
@@ -224,7 +225,7 @@ public class ChoiceActivity extends AppCompatActivity implements NavigationView.
         if (this.profil == null) this.profil = ProfilFragment.newInstance();
         ((ProfilFragment)this.profil).setNav(navigationView);
         this.startTransactionFragment(this.profil);
-        title.setText("Modifier mes information");
+        title.setText("Modifier mes informations");
     }
 
     private void showUpdatePassword(){
