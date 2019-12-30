@@ -72,6 +72,7 @@ public class WriteTaskS7{
                             Integer writePLC = comS7.WriteArea(S7.S7AreaDB, dbNumber, Integer.parseInt(adrress.getText().toString()), 2, motCommande);
                         }
                         else{
+                            System.out.println("fonctionne");
                             Integer writePLC = comS7.WriteArea(S7.S7AreaDB, dbNumber, Integer.parseInt(adrress.getText().toString()), 1, motCommande);
                         }
 

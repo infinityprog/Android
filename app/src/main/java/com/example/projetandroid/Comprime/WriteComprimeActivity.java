@@ -145,7 +145,8 @@ public class WriteComprimeActivity extends AppCompatActivity {
                 double v = Double.valueOf(position.getText().toString());
                 int pos = (int) Math.pow(2, v);
                 System.out.println("valeur exposant : " + pos);
-                writeS7.setWriteBool(pos, Integer.parseInt(valeur.getText().toString()));
+                System.out.println("valeur donnee : " + valeur.getText().toString().trim());
+                writeS7.setWriteBool(pos, Integer.parseInt(valeur.getText().toString().trim()));
                 error.setText("");
             }
 
@@ -160,4 +161,6 @@ public class WriteComprimeActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

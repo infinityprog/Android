@@ -85,11 +85,11 @@ public class InfoActivity extends AppCompatActivity {
         description.setText(sharedpreferences.getString("nav",null));
         if(sharedpreferences.getString("nav",null) == "Comprimé"){
             cuve.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),type,moduleName,serialNumber , num,version,statut,nbrCPB,nbrBouteille,Integer.parseInt(dataBlock.getText().toString()));
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content),type,moduleName,serialNumber , num,version,statut,nbrCPB,nbrBouteille,/*Integer.parseInt(dataBlock.getText().toString().trim())*/0);
         }
         else{
             comprime.setVisibility(View.GONE);
-            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) ,type,moduleName,serialNumber  , num,version,statut,Integer.parseInt(dataBlock.getText().toString()),niveau,pourcent);
+            readS7 = new ReadTaskS7(this.findViewById(android.R.id.content) ,type,moduleName,serialNumber  , num,version,statut,/*Integer.parseInt(dataBlock.getText().toString().trim())*/0,niveau,pourcent);
         }
 
         sharedpreferences = getSharedPreferences("automate", Context.MODE_PRIVATE);
@@ -105,7 +105,25 @@ public class InfoActivity extends AppCompatActivity {
                 this.bottomNavigationView.getMenu().findItem(R.id.btn_write).setVisible(false);
         }
 
+        dataBlock.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!dataBlock.getText().toString().trim().equals("")) {
+                    readS7.setDbNumber(Integer.parseInt(dataBlock.getText().toString().trim()));
+                }
+                error.setText("");
+            }
+        });
     }
 
     private void configureBottomView(){
@@ -148,7 +166,7 @@ public class InfoActivity extends AppCompatActivity {
         else {
             SharedPreferences sharedpreferences = getSharedPreferences("datablock", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putInt("db", Integer.parseInt(dataBlock.getText().toString()));
+            editor.putInt("db", Integer.parseInt(dataBlock.getText().toString().trim()));
             editor.commit();
             startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
             readS7.Stop();
