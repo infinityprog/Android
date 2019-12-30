@@ -36,6 +36,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:text="0"
@@ -85,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
                 android:text="0"
                 android:id="@+id/txv_nbrB"/>
@@ -123,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_0"
                 android:text="0"/>
         </LinearLayout>
@@ -149,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_1"
                 android:text="0"/>
         </LinearLayout>
@@ -173,6 +177,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:id="@+id/bite_2"
@@ -201,6 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_3"
                 android:text="0"/>
         </LinearLayout>
@@ -227,6 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_4"
                 android:text="0"/>
         </LinearLayout>
@@ -253,6 +260,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_5"
                 android:text="0"/>
         </LinearLayout>
@@ -278,6 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_6"
                 android:text="0"/>
         </LinearLayout>
@@ -304,6 +313,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_7"
                 android:text="0"/>
         </LinearLayout>
@@ -330,6 +340,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_8"
                     android:text="0"/>
             </LinearLayout>
@@ -356,6 +367,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_9"
                     android:text="0"/>
             </LinearLayout>
@@ -382,6 +394,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_10"
                     android:text="0"/>
             </LinearLayout>
@@ -408,6 +421,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_11"
                     android:text="0"/>
             </LinearLayout>
@@ -415,6 +429,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15dp"
                 android:layout_marginTop="50dp"
                 android:text="Sortie"/>
@@ -441,6 +456,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_12"
                     android:text="0"/>
             </LinearLayout>
@@ -467,6 +483,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_13"
                     android:text="0"/>
             </LinearLayout>
@@ -492,6 +509,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_14"
                     android:text="0"/>
             </LinearLayout>
@@ -518,6 +536,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_15"
                     android:text="0"/>
             </LinearLayout>
@@ -544,6 +563,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/bite_16"
                     android:text="0"/>
             </LinearLayout>
@@ -570,6 +590,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/bite_17"
                 android:text="0"/>
         </LinearLayout>

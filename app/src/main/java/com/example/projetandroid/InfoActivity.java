@@ -129,7 +129,7 @@ public class InfoActivity extends AppCompatActivity {
                 this.write();
                 break;
             case R.id.btn_web:
-                this.write();
+                this.web();
                 break;
         }
         return true;
@@ -156,7 +156,8 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     public void web(){
-
+        startActivity(new Intent(this, WebActivity.class));
+        readS7.Stop();
     }
 
     public void read() {

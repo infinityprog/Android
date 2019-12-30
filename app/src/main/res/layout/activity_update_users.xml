@@ -14,6 +14,7 @@
         android:layout_marginTop="30dp"
         android:textAlignment="center"
         android:id="@+id/title"
+        android:textColor="@color/colorPrimary"
         android:text="Modifier les informations"
         android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,6 +58,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/edt_name"
                     />
 
@@ -80,6 +82,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
                     android:id="@+id/edt_last_name"
                     />
             </LinearLayout>
@@ -99,6 +102,7 @@
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:id="@+id/edt_login"
             />
         <Spinner
@@ -106,6 +110,7 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:entries="@array/role_arrays"
+            android:textColor="@color/colorPrimary"
             android:id="@+id/role"
             />
 

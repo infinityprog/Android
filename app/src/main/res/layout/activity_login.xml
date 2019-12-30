@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:text="Connexion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -51,7 +52,9 @@
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
             android:id="@+id/edt_login"
+            android:textColor="@color/colorPrimary"
             />
 
         <TextView
@@ -68,13 +71,17 @@
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
             android:id="@+id/edt_password"
+            android:textColor="@color/colorPrimary"
             />
 
         <Button
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
             android:onClick="signIn"
             android:text="Connexion"
             />

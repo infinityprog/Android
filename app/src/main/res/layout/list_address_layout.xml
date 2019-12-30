@@ -15,7 +15,8 @@
         android:id="@+id/txt_description"
         android:textAlignment="center"
         android:textSize="17dp"
-        android:text="description"/>
+        android:textColor="@color/colorPrimary"
+        android:text="Description"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +25,8 @@
         android:textAlignment="center"
         android:id="@+id/txt_ip"
         android:textSize="17dp"
-        android:text="adresse ip"/>
+        android:textColor="@color/colorPrimary"
+        android:text="Adresse ip"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +35,8 @@
         android:textAlignment="center"
         android:id="@+id/txt_slot"
         android:textSize="17dp"
-        android:text="slot"/>
+        android:textColor="@color/colorPrimary"
+        android:text="Slot"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,6 +45,7 @@
         android:layout_weight="1"
         android:id="@+id/txt_rack"
         android:textSize="17dp"
-        android:text="rack"/>
+        android:textColor="@color/colorPrimary"
+        android:text="Rack"/>
 
 </LinearLayout>
