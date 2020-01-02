@@ -14,9 +14,9 @@
         android:textAlignment="center"
         android:text="Créé un compte Admin"
         android:textColor="@color/colorPrimary"
+        android:id="@+id/title"
         android:textSize="30sp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:layout_width="match_parent"

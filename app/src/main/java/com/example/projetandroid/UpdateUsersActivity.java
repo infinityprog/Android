@@ -114,7 +114,7 @@ public class UpdateUsersActivity extends AppCompatActivity {
     public void delete(View view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setTitle("Suppression");
-        builder1.setMessage("Etes vous sur de vouloir supprimé le compte ?");
+        builder1.setMessage("Etes vous sur de vouloir supprimer le compte ?");
 
         builder1.setPositiveButton(
                 "Oui",

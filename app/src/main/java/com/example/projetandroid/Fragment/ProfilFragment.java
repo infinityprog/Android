@@ -113,7 +113,7 @@ public class ProfilFragment extends Fragment {
             public void onClick(View view) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 builder1.setTitle("Suppression");
-                builder1.setMessage("Etes vous sur de vouloir supprimé le compte ?");
+                builder1.setMessage("Etes vous sur de vouloir supprimer le compte ?");
 
                 builder1.setPositiveButton(
                         "Oui",

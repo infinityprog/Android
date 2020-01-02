@@ -76,15 +76,30 @@
             android:textColor="@color/colorPrimary"
             />
 
-        <Button
+        <LinearLayout
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:onClick="signIn"
-            android:text="Connexion"
-            />
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="115dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:layout_height="40dp"
+                android:onClick="signUp"
+                android:text="Inscription"
+                />
+            <Button
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:onClick="signIn"
+                android:text="Connexion"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

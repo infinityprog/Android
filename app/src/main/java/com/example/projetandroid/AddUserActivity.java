@@ -3,17 +3,11 @@ package com.example.projetandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.projetandroid.Db.AutomateRepository;
-import com.example.projetandroid.Db.Database;
 import com.example.projetandroid.Db.UserRepository;
 import com.example.projetandroid.Entity.User;
 
@@ -22,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class AddUserActivity extends AppCompatActivity {
 
     private EditText name;
     private EditText lastName;
@@ -36,28 +30,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         this.name = (EditText) findViewById(R.id.edt_name);
         this.login = (EditText) findViewById(R.id.edt_login);
         this.password = (EditText) findViewById(R.id.edt_password);
         this.password2 = (EditText) findViewById(R.id.edt_passwordC);
         this.validation = (TextView) findViewById(R.id.validation);
         this.lastName = findViewById(R.id.edt_last_name);
+        TextView title = findViewById(R.id.title);
+        title.setText("Créer un compte");
         userRepository = new UserRepository(this);
-        userRepository.open();
-        boolean admin = false;
-        try {
-            admin = userRepository.adminExist();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        userRepository.close();
 
-        if(admin == true){
-            startActivity( new Intent(this, LoginActivity.class));
-            finish();
-        }
     }
 
     public void valid(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -93,13 +76,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(error.isEmpty()){
-            User user = new User(this.name.getText().toString().trim(),this.lastName.getText().toString().trim(),this.login.getText().toString().trim(),this.password.getText().toString().trim(),"ADMIN");
+            User user = new User(this.name.getText().toString().trim(),this.lastName.getText().toString().trim(),this.login.getText().toString().trim(),this.password.getText().toString().trim(),"BASIC");
             userRepository.open();
             userRepository.insert(user);
             User v = userRepository.findUser(this.login.getText().toString().trim());
             userRepository.close();
             this.validation.setText("Votre utilisateur " + v.getName() + " " + v.getLastName() + " à bien été créé");
-            startActivity( new Intent(this, LoginActivity.class));
+            onBackPressed();
+            finish();
         }
         else {
             String e = "" ;
@@ -109,5 +93,4 @@ public class MainActivity extends AppCompatActivity {
             this.validation.setText(e);
         }
     }
-
 }
