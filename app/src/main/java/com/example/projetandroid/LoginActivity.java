@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         ArrayList<String> error = new ArrayList<>();
 
         if (this.login.getText().toString().matches("")){
-            error.add("il manque le mail \n");
+            error.add("il manque l'email \n");
         }
         if ( this.password.getText().toString().matches("")){
             error.add("il manque le mot de passe \n");

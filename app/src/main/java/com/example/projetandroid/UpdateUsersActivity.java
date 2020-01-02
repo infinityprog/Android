@@ -66,7 +66,7 @@ public class UpdateUsersActivity extends AppCompatActivity {
             error.add("il manque le prénom \n");
         }
         if (login.getText().toString().matches("")){
-            error.add("il manque le mail \n");
+            error.add("il manque l'email \n");
         }
         else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(login.getText().toString()).matches()){
             error.add("le mail n'est pas au bon format \n");
