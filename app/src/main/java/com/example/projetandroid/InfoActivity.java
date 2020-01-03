@@ -1,7 +1,6 @@
 package com.example.projetandroid;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -9,22 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.projetandroid.Comprime.ReadComprimeActivity;
-import com.example.projetandroid.Comprime.WriteComprimeActivity;
 import com.example.projetandroid.Cuve.ReadCuveActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -168,7 +161,7 @@ public class InfoActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt("db", Integer.parseInt(dataBlock.getText().toString().trim()));
             editor.commit();
-            startActivity(new Intent(InfoActivity.this, WriteComprimeActivity.class));
+            startActivity(new Intent(InfoActivity.this, WriteActivity.class));
 
         }
     }

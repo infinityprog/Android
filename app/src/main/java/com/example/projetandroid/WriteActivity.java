@@ -1,4 +1,4 @@
-package com.example.projetandroid.Comprime;
+package com.example.projetandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +18,7 @@ import com.example.projetandroid.R;
 import com.example.projetandroid.ReadTaskS7;
 import com.example.projetandroid.WriteTaskS7;
 
-public class WriteComprimeActivity extends AppCompatActivity {
+public class WriteActivity extends AppCompatActivity {
 
     private TextView statut;
     private EditText address;
